@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>موقعي الشخصي</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+    body { background: #0f172a; color: #f8fafc; line-height: 1.6; }
+    header { display: flex; justify-content: space-between; align-items: center; padding: 20px 8%; background: #1e293b; position: sticky; top: 0; }
+    .logo { font-size: 1.4rem; font-weight: bold; color: #38bdf8; }
+    nav a { color: #cbd5e1; text-decoration: none; margin-right: 20px; font-weight: 500; transition: 0.2s; }
+    nav a:hover { color: #38bdf8; }
+    .hero { text-align: center; padding: 90px 20px; max-width: 750px; margin: auto; }
+    .hero h1 { font-size: 2.6rem; margin-bottom: 16px; color: #ffffff; }
+    .hero p { font-size: 1.15rem; color: #94a3b8; margin-bottom: 30px; }
+    .btn { background: #38bdf8; color: #0f172a; padding: 12px 28px; border: none; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: 0.2s; }
+    .btn:hover { background: #0284c7; color: #fff; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; padding: 40px 8%; max-width: 1100px; margin: auto; }
+    .card { background: #1e293b; padding: 25px; border-radius: 12px; border: 1px solid #334155; }
+    .card h3 { color: #38bdf8; margin-bottom: 10px; }
+    footer { text-align: center; padding: 25px; color: #64748b; border-top: 1px solid #1e293b; margin-top: 40px; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">موقعي</div>
+    <nav>
+      <a href="#about">من أنا</a>
+      <a href="#services">خدماتي</a>
+      <a href="#contact">تواصل معي</a>
+    </nav>
+  </header>
+
+  <section class="hero" id="about">
+    <h1>مرحباً بك في موقعي الرسمي</h1>
+    <p>هنا كنشارك المشاريع ديالي، الأفكار، والخدمات اللي كنقدم بطريقة بسيطة وعصرية.</p>
+    <button class="btn" onclick="sayHello()">تواصل معي الآن</button>
+  </section>
+
+  <section class="cards" id="services">
+    <div class="card">
+      <h3>المشروع الأول</h3>
+      <p>وصف مختصر للمشروع أو الخدمة الأولى اللي كتقدم.</p>
+    </div>
+    <div class="card">
+      <h3>المشروع الثاني</h3>
+      <p>وصف مختصر للمشروع أو الخدمة الثانية اللي كتقدم.</p>
+    </div>
+    <div class="card">
+      <h3>المشروع الثالث</h3>
+      <p>وصف مختصر للمشروع أو الخدمة الثالثة اللي كتقدم.</p>
+    </div>
+  </section>
+
+  <footer id="contact">
+    © 2026 جميع الحقوق محفوظة
+  </footer>
+
+  <script>
+    function sayHello() {
+      alert("شكراً لتواصلك! تقدر تبدل هاد الرسالة برابط واتساب أو إيميل ديالك.");
+    }
+  </script>
+
+</body>
+</html>
