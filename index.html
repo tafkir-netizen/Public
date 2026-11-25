@@ -224,3 +224,226 @@
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAFKIR | تفكير</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000000;
+            color: #e5e5e5;
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            min-height: 100vh;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* الشريط الجانبي */
+        .sidebar {
+            width: 270px;
+            background-color: #070707;
+            border-left: 1px solid #ff2a2a;
+            padding: 26px 20px;
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        /* صندوق السمية مع الروك يطل من وراها والدفاتر */
+        .brand-wrap {
+            position: relative;
+            margin-bottom: 26px;
+            padding-top: 12px;
+        }
+
+        .rook-peek {
+            position: absolute;
+            top: -4px;
+            left: 14px;
+            font-size: 2rem;
+            color: #ff2a2a;
+            line-height: 1;
+            z-index: 1;
+            opacity: 0.92;
+            transform: rotate(-8deg);
+        }
+
+        .notebooks-peek {
+            position: absolute;
+            top: 2px;
+            right: 12px;
+            font-size: 1.15rem;
+            z-index: 1;
+            opacity: 0.9;
+        }
+
+        .brand-box {
+            position: relative;
+            z-index: 2;
+            background-color: #0b0000;
+            border: 2px solid #ff2a2a;
+            border-radius: 8px;
+            padding: 14px 12px;
+            text-align: center;
+        }
+
+        .brand-box .title {
+            color: #ff2a2a;
+            font-size: 1.55rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            display: block;
+        }
+
+        .brand-box .sub {
+            color: #999999;
+            font-size: 0.8rem;
+            margin-top: 4px;
+            display: block;
+        }
+
+        /* القائمة تحت السمية */
+        .menu-box {
+            border: 1px solid #262626;
+            border-radius: 8px;
+            padding: 14px;
+            background-color: #0a0a0a;
+        }
+
+        .menu-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #ff2a2a;
+            font-size: 0.9rem;
+            font-weight: 700;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #222222;
+        }
+
+        .menu-items {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .menu-items li {
+            padding: 9px 10px;
+            margin-bottom: 7px;
+            border: 1px dashed #2e2e2e;
+            border-radius: 6px;
+            color: #8f8f8f;
+            font-size: 0.88rem;
+        }
+
+        .menu-items li:last-child {
+            margin-bottom: 0;
+        }
+
+        /* المساحة الرئيسية */
+        .main-area {
+            margin-right: 270px;
+            flex: 1;
+            padding: 40px;
+        }
+
+        .canvas-box {
+            max-width: 860px;
+            border: 1px dashed #ff2a2a;
+            border-radius: 10px;
+            padding: 32px;
+            background-color: #070707;
+            min-height: 360px;
+        }
+
+        .canvas-box h1 {
+            color: #ff2a2a;
+            margin-top: 0;
+            font-size: 1.5rem;
+        }
+
+        .canvas-box p {
+            color: #8a8a8a;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            .sidebar {
+                position: static;
+                width: 100%;
+                border-left: none;
+                border-bottom: 1px solid #ff2a2a;
+            }
+            .main-area {
+                margin-right: 0;
+                padding: 22px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="brand-wrap">
+            <span class="rook-peek" aria-hidden="true">♜</span>
+            <span class="notebooks-peek" aria-hidden="true">📓📒</span>
+            <div class="brand-box">
+                <span class="title">TAFKIR</span>
+                <span class="sub">♜ الدفاتر والتفكير 📓</span>
+            </div>
+        </div>
+
+        <nav class="menu-box" aria-label="قائمة الموقع">
+            <div class="menu-header">
+                <span>القائمة</span>
+                <span>♟️</span>
+            </div>
+            <ul class="menu-items">
+                <li>عنصر 1 — قيد التفكير</li>
+                <li>عنصر 2 — قيد التفكير</li>
+                <li>عنصر 3 — قيد التفكير</li>
+                <li>عنصر 4 — قيد التفكير</li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-area">
+        <section class="canvas-box">
+            <h1>مساحة مفتوحة 📓</h1>
+            <p>
+                هنا غادي تبدا تحط اللي بغيتي من بعد ما تحدد شنو غيكون في القائمة وفي الصفحة.
+            </p>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && ['c', 'u', 's', 'p'].includes(e.key.toLowerCase())) {
+                e.preventDefault();
+            }
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i')) {
+                e.preventDefault();
+            }
+        });
+    </script>
+
+</body>
+</html>
