@@ -104,4 +104,123 @@
     }
   });
     </script>
-    
+    <!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تفكير - القراءة والمنطق</title>
+    <style>
+        body {
+            background-color: #000000;
+            color: #e5e5e5;
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.85;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        header {
+            background-color: #080808;
+            padding: 28px 20px;
+            text-align: center;
+            border-bottom: 2px solid #ff2a2a;
+        }
+
+        header h1 {
+            color: #ff2a2a;
+            margin: 0;
+            font-size: 2.2rem;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            color: #a3a3a3;
+            margin-top: 8px;
+            font-size: 1rem;
+        }
+
+        .container {
+            max-width: 820px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background-color: #0c0c0c;
+            border: 1px solid #ff2a2a;
+            border-radius: 8px;
+            padding: 22px;
+            margin-bottom: 25px;
+        }
+
+        .card h2 {
+            color: #ff2a2a;
+            margin-top: 0;
+            border-bottom: 1px solid #3a0000;
+            padding-bottom: 10px;
+        }
+
+        .line-red {
+            border: 0;
+            height: 1px;
+            background-color: #ff2a2a;
+            margin: 20px 0;
+        }
+
+        .prompt-box {
+            color: #ff2a2a;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid #ff2a2a;
+            color: #777777;
+            font-size: 0.9rem;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>تفكير</h1>
+        <p>مساحة للقراءة العميقة، التحليل، وتدريب العقل</p>
+    </header>
+
+    <main class="container">
+        <section class="card">
+            <h2>لماذا نقرأ بتأنٍّ؟</h2>
+            <p>
+                القراءة السريعة تمنحك فكرة عامة، أما القراءة العميقة فتجعلك تفكك الفكرة وتختبر صحتها وتفهم أسبابها. العقل الذي يطرح الأسئلة يبني رأياً مستقلاً عوض أن يكرر كلام غيره.
+            </p>
+            <hr class="line-red">
+            <p class="prompt-box">سؤال للتفكير: ما هي الفكرة التي كنت تعتبرها بديهية ثم اكتشفت لاحقاً أنها تحتاج إلى مراجعة؟</p>
+        </section>
+    </main>
+
+    <footer>
+        جميع الحقوق محفوظة &copy; 2026 - تفكير
+    </footer>
+
+    <script>
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && ['c', 'u', 's', 'p'].includes(e.key.toLowerCase())) {
+                e.preventDefault();
+            }
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i')) {
+                e.preventDefault();
+            }
+        });
+    </script>
+
+</body>
+</html>
