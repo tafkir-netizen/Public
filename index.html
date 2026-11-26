@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TAFKIR - CHEESS</title>
+    <title>TAFKIR</title>
     <style>
         * {
             box-sizing: border-box;
@@ -16,21 +16,17 @@
             color: #f5f5f7;
             font-family: system-ui, -apple-system, sans-serif;
             text-align: center;
-            position: relative;
+            min-height: 100vh;
             overflow-x: hidden;
         }
 
-        body::before {
-            content: "";
+        #bg-dots {
             position: fixed;
             inset: 0;
+            width: 100%;
+            height: 100%;
             z-index: -1;
             pointer-events: none;
-            background-image:
-                radial-gradient(rgba(255, 255, 255, 0.22) 1px, transparent 1px),
-                radial-gradient(rgba(255, 42, 42, 0.28) 1.2px, transparent 1.2px);
-            background-size: 48px 48px, 84px 84px;
-            background-position: 0 0, 22px 18px;
         }
 
         .tafkir-nav {
@@ -54,6 +50,7 @@
             letter-spacing: 1.5px;
             color: #ff2a2a;
             text-decoration: none;
+            cursor: pointer;
         }
 
         .tafkir-menu {
@@ -63,23 +60,93 @@
             flex-wrap: wrap;
         }
 
-        .tafkir-link {
+        .nav-btn {
             padding: 6px 12px;
             border-radius: 8px;
             font-size: 13px;
             font-weight: 700;
             color: #e4e4e7;
-            text-decoration: none;
             background: #1b1b20;
             border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.15s ease;
+            cursor: pointer;
         }
 
-        .tafkir-link:hover,
-        .tafkir-link.active {
+        .nav-btn.active,
+        .nav-btn:hover {
             color: #ffffff;
-            background: rgba(255, 42, 42, 0.22);
-            border-color: rgba(255, 42, 42, 0.6);
+            background: rgba(255, 42, 42, 0.24);
+            border-color: rgba(255, 42, 42, 0.65);
+        }
+
+        .hub-wrapper {
+            max-width: 520px;
+            margin: 24px auto;
+            padding: 24px 18px;
+            border-radius: 18px;
+            background: rgba(20, 20, 24, 0.92);
+            border: 1px solid rgba(255, 42, 42, 0.35);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+        }
+
+        .hub-title {
+            margin: 0 0 8px;
+            font-size: 26px;
+            font-weight: 900;
+            color: #ff2a2a;
+        }
+
+        .hub-sub {
+            margin: 0 0 20px;
+            font-size: 14px;
+            color: #c4c4cc;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .choice-card {
+            width: 100%;
+            padding: 16px;
+            border-radius: 14px;
+            background: #18181d;
+            border: 1px solid rgba(255, 42, 42, 0.35);
+            color: #f5f5f7;
+            text-align: right;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .choice-card:hover {
+            background: rgba(255, 42, 42, 0.14);
+            border-color: #ff2a2a;
+        }
+
+        .choice-name {
+            font-size: 16px;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .choice-desc {
+            font-size: 12px;
+            color: #b4b4bc;
+            margin-top: 4px;
+        }
+
+        .choice-badge {
+            padding: 6px 12px;
+            border-radius: 8px;
+            background: #ff2a2a;
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
         }
 
         .game-wrapper {
@@ -125,7 +192,7 @@
             font-weight: 700;
         }
 
-        button {
+        .action-btn {
             padding: 7px 14px;
             border: none;
             border-radius: 8px;
@@ -136,7 +203,7 @@
             cursor: pointer;
         }
 
-        button:hover {
+        .action-btn:hover {
             opacity: 0.9;
         }
 
@@ -205,23 +272,53 @@
             color: #d4d4d8;
             min-height: 20px;
         }
+
+        .hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
+    <canvas id="bg-dots"></canvas>
+
     <nav class="tafkir-nav" aria-label="قائمة TAFKIR">
-        <a href="#top" class="tafkir-brand">TAFKIR</a>
+        <span class="tafkir-brand" onclick="openMenu()">TAFKIR</span>
         <div class="tafkir-menu">
-            <a href="#chess-section" class="tafkir-link active">الشطرنج</a>
-            <a href="#chess-section" class="tafkir-link" onclick="resetGame(); return false;">لعبة جديدة</a>
+            <button type="button" id="tab-menu" class="nav-btn active" onclick="openMenu()">القائمة</button>
+            <button type="button" id="tab-chess" class="nav-btn" onclick="openChess()">الشطرنج</button>
         </div>
     </nav>
 
-    <main id="chess-section" class="game-wrapper">
+    <section id="menu-view" class="hub-wrapper">
+        <h1 class="hub-title">TAFKIR</h1>
+        <p class="hub-sub">اختر القسم اللي بغيتي تدخل ليه</p>
+
+        <div class="menu-grid">
+            <button type="button" class="choice-card" onclick="openChess()">
+                <div>
+                    <div class="choice-name">CHEESS — الشطرنج</div>
+                    <div class="choice-desc">لعب الشطرنج (الأبيض ضد الأحمر) مع حركة انزلاق وصوت</div>
+                </div>
+                <span class="choice-badge">دخول</span>
+            </button>
+
+            <button type="button" class="choice-card" onclick="openChess(true)">
+                <div>
+                    <div class="choice-name">مباراة جديدة مباشرة</div>
+                    <div class="choice-desc">تصفير الرقعة والبدء من جديد</div>
+                </div>
+                <span class="choice-badge">ابدأ</span>
+            </button>
+        </div>
+    </section>
+
+    <main id="chess-view" class="game-wrapper hidden">
         <div class="game-header">
-            <h1 class="game-title">CHEESS</h1>
+            <h2 class="game-title">CHEESS</h2>
             <div class="controls">
                 <span id="turn-text">الدور: الأبيض ♔</span>
-                <button type="button" onclick="resetGame()">إعادة اللعبة</button>
+                <button type="button" class="action-btn" onclick="resetGame()">إعادة اللعبة</button>
+                <button type="button" class="nav-btn" onclick="openMenu()">القائمة</button>
             </div>
         </div>
 
@@ -230,6 +327,83 @@
     </main>
 
     <script>
+        /* خلفية النقاط المتحركة بسرعة 1.5 */
+        const BG_SPEED = 1.5;
+
+        (function initAnimatedBackground() {
+            const canvas = document.getElementById('bg-dots');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            if (!ctx) return;
+
+            let dots = [];
+
+            function createDots() {
+                const count = Math.min(70, Math.max(30, Math.floor((window.innerWidth * window.innerHeight) / 14000)));
+                dots = Array.from({ length: count }, (_, idx) => {
+                    const angle = (idx * 2.39996) % (Math.PI * 2);
+                    return {
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        r: idx % 4 === 0 ? 2 : 1.35,
+                        vx: Math.cos(angle) * BG_SPEED,
+                        vy: Math.sin(angle) * BG_SPEED,
+                        isRed: idx % 3 === 0
+                    };
+                });
+            }
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                createDots();
+            }
+
+            function step() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                for (const d of dots) {
+                    d.x += d.vx;
+                    d.y += d.vy;
+
+                    if (d.x < -10) d.x = canvas.width + 10;
+                    if (d.x > canvas.width + 10) d.x = -10;
+                    if (d.y < -10) d.y = canvas.height + 10;
+                    if (d.y > canvas.height + 10) d.y = -10;
+
+                    ctx.beginPath();
+                    ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+                    ctx.fillStyle = d.isRed ? 'rgba(255, 42, 42, 0.45)' : 'rgba(255, 255, 255, 0.25)';
+                    ctx.fill();
+                }
+
+                requestAnimationFrame(step);
+            }
+
+            window.addEventListener('resize', resize);
+            resize();
+            requestAnimationFrame(step);
+        })();
+
+        function openMenu() {
+            document.getElementById('menu-view').classList.remove('hidden');
+            document.getElementById('chess-view').classList.add('hidden');
+            document.getElementById('tab-menu').classList.add('active');
+            document.getElementById('tab-chess').classList.remove('active');
+        }
+
+        function openChess(shouldReset = false) {
+            document.getElementById('menu-view').classList.add('hidden');
+            document.getElementById('chess-view').classList.remove('hidden');
+            document.getElementById('tab-menu').classList.remove('active');
+            document.getElementById('tab-chess').classList.add('active');
+            if (shouldReset) {
+                resetGame();
+            } else {
+                fixBoardLayout();
+            }
+        }
+
         const initialSetup = [
             ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'],
             ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
@@ -438,7 +612,7 @@
             boardEl.style.aspectRatio = '1 / 1';
             boardEl.style.width = '100%';
             boardEl.style.maxWidth = '380px';
-            boardEl.style.margin = '0 auto';
+                        boardEl.style.margin = '0 auto';
             boardEl.style.overflow = 'hidden';
 
             const squares = boardEl.querySelectorAll('.square');
@@ -554,6 +728,7 @@
         }
 
         resetGame();
+        openMenu();
     </script>
 </body>
 </html>
