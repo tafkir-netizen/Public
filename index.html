@@ -484,4 +484,565 @@
         resetGame();
     </script>
 </body>
+</html
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TAFKIR - CHEESS</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0 12px 28px;
+            background-color: #09090b;
+            color: #f5f5f7;
+            font-family: system-ui, -apple-system, sans-serif;
+            text-align: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* خلفية النقاط الخفيفة ديال TAFKIR */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background-image:
+                radial-gradient(rgba(255, 255, 255, 0.22) 1px, transparent 1px),
+                radial-gradient(rgba(255, 42, 42, 0.28) 1.2px, transparent 1.2px);
+            background-size: 48px 48px, 84px 84px;
+            background-position: 0 0, 22px 18px;
+        }
+
+        /* قائمة TAFKIR العلوية */
+        .tafkir-nav {
+            max-width: 720px;
+            margin: 14px auto 18px;
+            padding: 10px 16px;
+            border-radius: 14px;
+            background: rgba(20, 20, 24, 0.88);
+            border: 1px solid rgba(255, 42, 42, 0.35);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .tafkir-brand {
+            font-size: 18px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            color: #ff2a2a;
+            text-decoration: none;
+        }
+
+        .tafkir-menu {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tafkir-link {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #e4e4e7;
+            text-decoration: none;
+            background: #1b1b20;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.15s ease;
+        }
+
+        .tafkir-link:hover,
+        .tafkir-link.active {
+            color: #ffffff;
+            background: rgba(255, 42, 42, 0.22);
+            border-color: rgba(255, 42, 42, 0.6);
+        }
+
+        .game-wrapper {
+            max-width: 440px;
+            margin: 0 auto;
+            padding: 18px;
+            border-radius: 16px;
+            background-color: rgba(20, 20, 24, 0.94);
+            border: 1px solid rgba(255, 42, 42, 0.35);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+        }
+
+        .game-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+
+        .game-title {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #ff2a2a;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        #turn-text {
+            padding: 6px 12px;
+            border-radius: 8px;
+            background-color: #1e1e24;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        button {
+            padding: 7px 14px;
+            border: none;
+            border-radius: 8px;
+            background-color: #ff2a2a;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        #board {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            grid-template-rows: repeat(8, 1fr);
+            aspect-ratio: 1 / 1;
+            width: 100%;
+            max-width: 380px;
+            margin: 0 auto;
+            overflow: hidden;
+            border: 2px solid #ff2a2a;
+            border-radius: 10px;
+        }
+
+        .square {
+            aspect-ratio: 1 / 1;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(22px, 6vw, 34px);
+            line-height: 1;
+            position: relative;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .square.light {
+            background-color: #2c2c2c;
+        }
+
+        .square.dark {
+            background-color: #121212;
+        }
+
+        .square.selected {
+            background-color: rgba(255, 42, 42, 0.35) !important;
+        }
+
+        .square.valid-move::after {
+            content: "";
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #ff2a2a;
+            opacity: 0.85;
+            pointer-events: none;
+        }
+
+        .piece-white {
+            color: #ffffff;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+        }
+
+        .piece-black {
+            color: #ff3b3b;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.85);
+        }
+
+        #game-msg {
+            margin-top: 12px;
+            font-size: 14px;
+            color: #d4d4d8;
+            min-height: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="tafkir-nav" aria-label="قائمة TAFKIR">
+        <a href="#top" class="tafkir-brand">TAFKIR</a>
+        <div class="tafkir-menu">
+            <a href="#chess-section" class="tafkir-link active">الشطرنج</a>
+            <a href="#chess-section" class="tafkir-link" onclick="resetGame(); return false;">لعبة جديدة</a>
+        </div>
+    </nav>
+
+    <main id="chess-section" class="game-wrapper">
+        <div class="game-header">
+            <h1 class="game-title">CHEESS</h1>
+            <div class="controls">
+                <span id="turn-text">الدور: الأبيض ♔</span>
+                <button type="button" onclick="resetGame()">إعادة اللعبة</button>
+            </div>
+        </div>
+
+        <div id="board"></div>
+        <p id="game-msg">اضغط على قطعة لتحريكها (الأبيض ضد الأحمر).</p>
+    </main>
+
+    <script>
+        const initialSetup = [
+            ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'],
+            ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
+            ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R']
+        ];
+
+        const pieceSymbols = {
+            K: '♔', Q: '♕', R: '♖', B: '♗', N: '♘', P: '♙',
+            k: '♚', q: '♛', r: '♜', b: '♝', n: '♞', p: '♟'
+        };
+
+        let board = [];
+        let turn = 'white';
+        let selected = null;
+        let validMoves = [];
+        let gameOver = false;
+        let audioCtx = null;
+
+        function isWhite(piece) {
+            return piece && piece === piece.toUpperCase();
+        }
+
+        function isBlack(piece) {
+            return piece && piece === piece.toLowerCase();
+        }
+
+        function inBounds(r, c) {
+            return r >= 0 && r < 8 && c >= 0 && c < 8;
+        }
+
+        function getValidMoves(r, c) {
+            const piece = board[r][c];
+            if (!piece) return [];
+
+            const whitePiece = isWhite(piece);
+            const type = piece.toLowerCase();
+            const moves = [];
+
+            const canLand = (nr, nc) => {
+                if (!inBounds(nr, nc)) return false;
+                const target = board[nr][nc];
+                if (!target) return true;
+                return whitePiece ? isBlack(target) : isWhite(target);
+            };
+
+            const addSliding = (dirs) => {
+                for (const [dr, dc] of dirs) {
+                    let nr = r + dr;
+                    let nc = c + dc;
+                    while (inBounds(nr, nc)) {
+                        const target = board[nr][nc];
+                        if (!target) {
+                            moves.push([nr, nc]);
+                        } else {
+                            if (whitePiece ? isBlack(target) : isWhite(target)) {
+                                moves.push([nr, nc]);
+                            }
+                            break;
+                        }
+                        nr += dr;
+                        nc += dc;
+                    }
+                }
+            };
+
+            if (type === 'p') {
+                const dir = whitePiece ? -1 : 1;
+                const startRow = whitePiece ? 6 : 1;
+
+                if (inBounds(r + dir, c) && !board[r + dir][c]) {
+                    moves.push([r + dir, c]);
+                    if (r === startRow && inBounds(r + dir * 2, c) && !board[r + dir * 2][c]) {
+                        moves.push([r + dir * 2, c]);
+                    }
+                }
+
+                for (const dc of [-1, 1]) {
+                    const nr = r + dir;
+                    const nc = c + dc;
+                    if (inBounds(nr, nc) && board[nr][nc]) {
+                        if (whitePiece ? isBlack(board[nr][nc]) : isWhite(board[nr][nc])) {
+                            moves.push([nr, nc]);
+                        }
+                    }
+                }
+            } else if (type === 'n') {
+                const jumps = [
+                    [-2, -1], [-2, 1], [-1, -2], [-1, 2],
+                    [1, -2], [1, 2], [2, -1], [2, 1]
+                ];
+                for (const [dr, dc] of jumps) {
+                    const nr = r + dr;
+                    const nc = c + dc;
+                    if (canLand(nr, nc)) moves.push([nr, nc]);
+                }
+            } else if (type === 'r') {
+                addSliding([[-1, 0], [1, 0], [0, -1], [0, 1]]);
+            } else if (type === 'b') {
+                addSliding([[-1, -1], [-1, 1], [1, -1], [1, 1]]);
+            } else if (type === 'q') {
+                addSliding([
+                    [-1, 0], [1, 0], [0, -1], [0, 1],
+                    [-1, -1], [-1, 1], [1, -1], [1, 1]
+                ]);
+            } else if (type === 'k') {
+                for (let dr = -1; dr <= 1; dr++) {
+                    for (let dc = -1; dc <= 1; dc++) {
+                        if (dr !== 0 || dc !== 0) {
+                            const nr = r + dr;
+                            const nc = c + dc;
+                            if (canLand(nr, nc)) moves.push([nr, nc]);
+                        }
+                    }
+                }
+            }
+
+            return moves;
+        }
+
+        function playPieceSound(isCapture = false) {
+            try {
+                const Ctx = window.AudioContext || window.webkitAudioContext;
+                if (!Ctx) return;
+                if (!audioCtx) audioCtx = new Ctx();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+
+                const now = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+
+                osc.type = isCapture ? 'triangle' : 'sine';
+                osc.frequency.setValueAtTime(isCapture ? 240 : 190, now);
+                osc.frequency.exponentialRampToValueAtTime(isCapture ? 75 : 65, now + 0.085);
+
+                gain.gain.setValueAtTime(0.001, now);
+                gain.gain.linearRampToValueAtTime(isCapture ? 0.35 : 0.25, now + 0.01);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.start(now);
+                osc.stop(now + 0.095);
+            } catch (e) {}
+        }
+
+        function animatePieceSlide(fromRow, fromCol, toRow, toCol, pieceKey, isCapture) {
+            try {
+                const boardEl = document.getElementById('board');
+                const squares = boardEl ? boardEl.querySelectorAll('.square') : [];
+                const fromSq = squares[fromRow * 8 + fromCol];
+                const toSq = squares[toRow * 8 + toCol];
+
+                if (!fromSq || !toSq) {
+                    playPieceSound(isCapture);
+                    return;
+                }
+
+                const fromRect = fromSq.getBoundingClientRect();
+                const toRect = toSq.getBoundingClientRect();
+
+                const ghost = document.createElement('div');
+                ghost.textContent = pieceSymbols[pieceKey] || pieceKey || '';
+                ghost.className = isWhite(pieceKey) ? 'piece-white' : 'piece-black';
+                ghost.style.position = 'fixed';
+                ghost.style.left = fromRect.left + 'px';
+                ghost.style.top = fromRect.top + 'px';
+                ghost.style.width = fromRect.width + 'px';
+                ghost.style.height = fromRect.height + 'px';
+                ghost.style.display = 'flex';
+                ghost.style.alignItems = 'center';
+                ghost.style.justifyContent = 'center';
+                ghost.style.fontSize = getComputedStyle(toSq).fontSize || '28px';
+                ghost.style.lineHeight = '1';
+                ghost.style.pointerEvents = 'none';
+                ghost.style.zIndex = '9999';
+                ghost.style.transition = 'transform 140ms cubic-bezier(0.22, 1, 0.36, 1)';
+
+                document.body.appendChild(ghost);
+
+                requestAnimationFrame(() => {
+                    ghost.style.transform = `translate3d(${toRect.left - fromRect.left}px, ${toRect.top - fromRect.top}px, 0) scale(1.06)`;
+                });
+
+                setTimeout(() => {
+                    playPieceSound(isCapture);
+                    ghost.remove();
+                }, 145);
+            } catch (e) {
+                playPieceSound(isCapture);
+            }
+        }
+
+        function fixBoardLayout() {
+            const boardEl = document.getElementById('board');
+            if (!boardEl) return;
+
+            boardEl.style.display = 'grid';
+            boardEl.style.gridTemplateColumns = 'repeat(8, 1fr)';
+            boardEl.style.gridTemplateRows = 'repeat(8, 1fr)';
+            boardEl.style.aspectRatio = '1 / 1';
+            boardEl.style.width = '100%';
+            boardEl.style.maxWidth = '380px';
+            boardEl.style.margin = '0 auto';
+            boardEl.style.overflow = 'hidden';
+
+            const squares = boardEl.querySelectorAll('.square');
+            squares.forEach(sq => {
+                sq.style.aspectRatio = '1 / 1';
+                sq.style.width = '100%';
+                sq.style.height = '100%';
+                sq.style.display = 'flex';
+                sq.style.alignItems = 'center';
+                sq.style.justifyContent = 'center';
+                sq.style.fontSize = 'clamp(22px, 6vw, 34px)';
+                sq.style.lineHeight = '1';
+                sq.style.position = 'relative';
+                sq.style.backgroundColor = sq.classList.contains('light') ? '#2c2c2c' : '#121212';
+                if (sq.classList.contains('selected')) {
+                    sq.style.backgroundColor = 'rgba(255, 42, 42, 0.35)';
+                }
+            });
+        }
+
+        function renderBoard() {
+            const boardEl = document.getElementById('board');
+            boardEl.innerHTML = '';
+
+            for (let r = 0; r < 8; r++) {
+                for (let c = 0; c < 8; c++) {
+                    const sq = document.createElement('div');
+                    sq.className = 'square ' + ((r + c) % 2 === 0 ? 'light' : 'dark');
+
+                    if (selected && selected[0] === r && selected[1] === c) {
+                        sq.classList.add('selected');
+                    }
+
+                    if (validMoves.some(m => m[0] === r && m[1] === c)) {
+                        sq.classList.add('valid-move');
+                    }
+
+                    const piece = board[r][c];
+                    if (piece) {
+                        const span = document.createElement('span');
+                        span.textContent = pieceSymbols[piece] || piece;
+                        span.className = isWhite(piece) ? 'piece-white' : 'piece-black';
+                        sq.appendChild(span);
+                    }
+
+                    sq.onclick = () => handleSquareClick(r, c);
+                    boardEl.appendChild(sq);
+                }
+            }
+
+            fixBoardLayout();
+        }
+
+        function handleSquareClick(r, c) {
+            if (gameOver) return;
+            const clickedPiece = board[r][c];
+
+            if (selected) {
+                const isMove = validMoves.some(m => m[0] === r && m[1] === c);
+                if (isMove) {
+                    const [sr, sc] = selected;
+                    const movingPiece = board[sr][sc];
+                    const captured = board[r][c];
+
+                    board[r][c] = movingPiece;
+                    board[sr][sc] = '';
+
+                    animatePieceSlide(sr, sc, r, c, movingPiece, Boolean(captured));
+
+                    if (movingPiece === 'P' && r === 0) board[r][c] = 'Q';
+                    if (movingPiece === 'p' && r === 7) board[r][c] = 'q';
+
+                    selected = null;
+                    validMoves = [];
+
+                    if (captured && captured.toLowerCase() === 'k') {
+                        gameOver = true;
+                        document.getElementById('turn-text').textContent = 'انتهت اللعبة!';
+                        document.getElementById('game-msg').textContent =
+                            turn === 'white' ? 'فاز الأبيض ♔!' : 'فاز الأحمر ♚!';
+                        renderBoard();
+                        return;
+                    }
+
+                    turn = turn === 'white' ? 'black' : 'white';
+                    document.getElementById('turn-text').textContent =
+                        turn === 'white' ? 'الدور: الأبيض ♔' : 'الدور: الأحمر ♚';
+                    renderBoard();
+                    return;
+                }
+            }
+
+            if (clickedPiece && ((turn === 'white' && isWhite(clickedPiece)) || (turn === 'black' && isBlack(clickedPiece)))) {
+                selected = [r, c];
+                validMoves = getValidMoves(r, c);
+            } else {
+                selected = null;
+                validMoves = [];
+            }
+
+            renderBoard();
+        }
+
+        function resetGame() {
+            board = initialSetup.map(row => [...row]);
+            turn = 'white';
+            selected = null;
+            validMoves = [];
+            gameOver = false;
+            document.getElementById('turn-text').textContent = 'الدور: الأبيض ♔';
+            document.getElementById('game-msg').textContent = 'اضغط على قطعة لتحريكها (الأبيض ضد الأحمر).';
+            renderBoard();
+        }
+
+        resetGame();
+    </script>
+</body>
 </html>
