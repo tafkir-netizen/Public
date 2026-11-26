@@ -3,196 +3,527 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TAFKIR</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TAFKIR | تفكير</title>
+
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#080b10;color:white;font-family:Arial,sans-serif;min-height:100vh}
-#stars{position:fixed;inset:0;pointer-events:none;background-image:radial-gradient(2px 2px at 20px 30px,#fff 50%,transparent),radial-gradient(1px 1px at 90px 80px,#fff 50%,transparent);background-size:180px 150px;opacity:.65;animation:stars 4s infinite alternate}
-@keyframes stars{to{opacity:.25}}
-header{height:65px;display:flex;justify-content:space-between;align-items:center;padding:0 18px;position:relative;border-bottom:1px solid #ffffff22;background:#080b10}
-.logo{font-size:24px;font-weight:bold;letter-spacing:2px}
-.menu{font-size:27px;background:#151c25;color:white;border:1px solid #ffffff33;border-radius:9px;padding:4px 12px;cursor:pointer}
-.drawer{position:fixed;z-index:5;right:-270px;top:0;width:250px;height:100vh;background:#111820;padding:20px;transition:.3s}
-.drawer.open{right:0}
-.drawer button{display:block;width:100%;padding:16px;text-align:right;background:none;color:white;border:0;border-bottom:1px solid #ffffff22;font-size:16px;cursor:pointer}
-.drawer .close{font-size:25px;text-align:left}
-main{position:relative;max-width:850px;margin:auto;padding:30px 15px}
-.home{text-align:center;padding:35px 5px}
-.home h1{font-size:55px;margin:15px}
-.home p{color:#aab4bf}
-.count{max-width:570px;margin:30px auto;background:#111820;padding:22px;border:1px solid #ffffff22;border-radius:18px}
-.timer{display:flex;justify-content:center;gap:9px;direction:ltr;flex-wrap:wrap}
-.time{background:#080d13;border:1px solid #ffffff22;padding:12px 8px;border-radius:10px;min-width:70px}
-.time strong{display:block;font-size:28px}
-.time span{font-size:12px;color:#aab4bf}
-.caption{margin-top:15px;color:#c5ced7}
-#chessPage{display:none}
-.buttons{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}
-button.action{background:#19232e;color:white;border:1px solid #ffffff33;padding:11px 15px;border-radius:9px;cursor:pointer}
-button.action.primary{background:#eee;color:#111;font-weight:bold}
-.status{margin:12px 0;color:#ddd;min-height:24px}
-.boardwrap{width:min(94vw,550px);margin:auto;background:#17212a;padding:7px;border-radius:12px}
-.board{display:grid;grid-template-columns:repeat(8,1fr);aspect-ratio:1}
-.sq{display:flex;justify-content:center;align-items:center;position:relative;cursor:pointer;aspect-ratio:1}
-.light{background:#eeeed2}.dark{background:#769656}
-.sq.selected{box-shadow:inset 0 0 0 4px #f5d66b}
-.sq.target:after{content:"";width:25%;height:25%;background:#263b1c99;border-radius:50%;position:absolute}
-.piece{font-size:clamp(25px,7vw,52px);position:relative;z-index:1;transition:transform .2s ease}
-.white{color:white;text-shadow:0 1px 2px #222}
-.black{color:#151515;text-shadow:0 1px 1px #fff8}
-footer{position:relative;text-align:center;border-top:1px solid #ffffff22;padding:22px;color:#929eaa;margin-top:30px;font-size:13px}
-@media(min-width:700px){.menu{display:block}}
+*{
+ margin:0;
+ padding:0;
+ box-sizing:border-box;
+}
+
+:root{
+ --black:#07070c;
+ --white:#fff;
+ --purple:#a855f7;
+ --muted:#aaa4b8;
+}
+
+body{
+ min-height:100vh;
+ background:var(--black);
+ color:var(--white);
+ font-family:Arial,Tahoma,sans-serif;
+ overflow-x:hidden;
+}
+
+/* النجوم المتحركة */
+#stars{
+ position:fixed;
+ inset:-200px;
+ z-index:0;
+ pointer-events:none;
+ background-image:
+ radial-gradient(2px 2px at 30px 40px,#fff 98%,transparent),
+ radial-gradient(1px 1px at 100px 120px,#fff 98%,transparent),
+ radial-gradient(2px 2px at 180px 70px,#fff 98%,transparent),
+ radial-gradient(1px 1px at 250px 190px,#fff 98%,transparent),
+ radial-gradient(2px 2px at 320px 250px,#fff 98%,transparent);
+ background-size:350px 300px;
+ animation:starsMove 8s linear infinite;
+ opacity:.65;
+}
+
+@keyframes starsMove{
+ from{transform:translateY(0)}
+ to{transform:translateY(300px)}
+}
+
+/* الشريط العلوي */
+header{
+ height:75px;
+ display:none;
+ align-items:center;
+ justify-content:space-between;
+ padding:0 20px;
+ position:relative;
+ z-index:5;
+ background:#090910e8;
+ border-bottom:1px solid #ffffff16;
+ backdrop-filter:blur(12px);
+}
+
+.logo{
+ font-size:23px;
+ font-weight:bold;
+ letter-spacing:3px;
+}
+
+.menu-button{
+ width:47px;
+ height:45px;
+ border:1px solid #ffffff30;
+ border-radius:12px;
+ background:#171722;
+ color:white;
+ font-size:27px;
+ cursor:pointer;
+}
+
+/* القائمة الجانبية للهاتف */
+.drawer{
+ position:fixed;
+ top:0;
+ right:-280px;
+ width:270px;
+ height:100vh;
+ z-index:20;
+ background:#101019;
+ border-left:1px solid #ffffff20;
+ transition:right .3s ease;
+ padding:20px;
+}
+
+.drawer.open{
+ right:0;
+}
+
+.drawer button{
+ color:white;
+ background:none;
+ border:0;
+ font-size:25px;
+ cursor:pointer;
+}
+
+.overlay{
+ position:fixed;
+ inset:0;
+ background:#000a;
+ z-index:15;
+ display:none;
+}
+
+.overlay.show{
+ display:block;
+}
+
+/* التصميم العام */
+.layout{
+ position:relative;
+ z-index:1;
+ min-height:calc(100vh - 70px);
+ display:flex;
+}
+
+/* الجانب الأيمن للكمبيوتر */
+.sidebar{
+ width:285px;
+ min-width:285px;
+ min-height:100vh;
+ padding:35px 25px;
+ border-left:1px solid #ffffff17;
+ background:#0b0b12b8;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+}
+
+.brand-area{
+ width:100%;
+ text-align:center;
+ position:relative;
+ padding:25px 0 35px;
+}
+
+.brand-title{
+ font-size:53px;
+ font-weight:900;
+ color:white;
+ letter-spacing:1px;
+ position:relative;
+ display:inline-block;
+}
+
+.purple-line{
+ width:160px;
+ height:4px;
+ border-radius:10px;
+ background:var(--purple);
+ margin:12px auto 0;
+ box-shadow:0 0 15px #a855f788;
+}
+
+/* زينة الشطرنج والدفاتر */
+.decor{
+ position:relative;
+ width:100%;
+ height:170px;
+ margin-top:20px;
+}
+
+.rook{
+ position:absolute;
+ top:0;
+ right:48px;
+ font-size:55px;
+ color:white;
+ text-shadow:0 0 15px #ffffff44;
+ animation:float 3s ease-in-out infinite;
+}
+
+.knight{
+ position:absolute;
+ top:45px;
+ right:-14px;
+ font-size:75px;
+ color:#eee;
+ transform:rotate(-12deg);
+ text-shadow:0 0 18px #a855f766;
+ animation:float 3.5s ease-in-out infinite;
+}
+
+.notebook{
+ position:absolute;
+ left:30px;
+ bottom:8px;
+ width:75px;
+ height:90px;
+ border-radius:5px 10px 10px 5px;
+ background:#252037;
+ border:2px solid #a855f7;
+ transform:rotate(-10deg);
+ box-shadow:5px 6px 0 #171323;
+}
+
+.notebook:before{
+ content:"";
+ position:absolute;
+ top:12px;
+ left:9px;
+ right:9px;
+ height:2px;
+ background:#c4a2ed;
+ box-shadow:0 13px #c4a2ed,0 26px #c4a2ed,0 39px #c4a2ed;
+}
+
+.notebook.second{
+ left:75px;
+ bottom:0;
+ background:#171c2a;
+ transform:rotate(9deg);
+ border-color:#7770a0;
+ z-index:-1;
+}
+
+@keyframes float{
+ 0%,100%{transform:translateY(0)}
+ 50%{transform:translateY(-9px)}
+}
+
+/* قائمة الكمبيوتر */
+.desktop-menu{
+ width:100%;
+ margin-top:15px;
+}
+
+.desktop-menu button{
+ width:100%;
+ padding:16px;
+ border-radius:12px;
+ border:1px solid #a855f744;
+ background:#a855f714;
+ color:white;
+ font-size:16px;
+ text-align:right;
+ cursor:pointer;
+ transition:.2s;
+}
+
+.desktop-menu button:hover{
+ background:#a855f733;
+}
+
+/* المحتوى الرئيسي */
+.content{
+ flex:1;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+ padding:50px 20px;
+ text-align:center;
+}
+
+.welcome{
+ color:#aaa4b8;
+ font-size:14px;
+ letter-spacing:4px;
+ margin-bottom:15px;
+}
+
+.content h1{
+ font-size:clamp(36px,6vw,58px);
+ margin-bottom:12px;
+ color:white;
+}
+
+.content-description{
+ color:#c3bdce;
+ font-size:16px;
+ line-height:2;
+}
+
+/* العد التنازلي */
+.countdown{
+ width:min(100%,600px);
+ margin:45px auto 0;
+ padding:30px 16px;
+ background:#11111cbb;
+ border:1px solid #ffffff20;
+ border-radius:20px;
+ box-shadow:0 15px 55px #0008;
+}
+
+.countdown h2{
+ font-size:20px;
+ margin-bottom:25px;
+ color:white;
+}
+
+.timer{
+ display:flex;
+ justify-content:center;
+ gap:10px;
+ flex-wrap:wrap;
+ direction:ltr;
+}
+
+.time-box{
+ min-width:85px;
+ padding:15px 9px;
+ border-radius:12px;
+ background:#08080f;
+ border:1px solid #a855f733;
+}
+
+.time-box strong{
+ display:block;
+ font-size:32px;
+ color:white;
+ font-variant-numeric:tabular-nums;
+}
+
+.time-box span{
+ display:block;
+ font-size:12px;
+ color:#bcb4c9;
+ margin-top:5px;
+}
+
+.countdown-caption{
+ margin-top:23px;
+ font-size:16px;
+ color:white;
+}
+
+/* الحقوق */
+footer{
+ position:relative;
+ z-index:1;
+ text-align:center;
+ padding:23px 12px;
+ color:#aaa4b8;
+ border-top:1px solid #ffffff17;
+ font-size:13px;
+}
+
+/* الهاتف */
+@media(max-width:700px){
+
+ header{
+  display:flex;
+ }
+
+ .layout{
+  min-height:calc(100vh - 75px);
+ }
+
+ .sidebar{
+  display:none;
+ }
+
+ .content{
+  padding:45px 16px;
+ }
+
+ .content h1{
+  font-size:40px;
+ }
+
+ .countdown{
+  margin-top:35px;
+  padding:25px 10px;
+ }
+
+ .time-box{
+  min-width:70px;
+ }
+
+ .time-box strong{
+  font-size:26px;
+ }
+
+ .welcome{
+  font-size:12px;
+ }
+
+}
 </style>
 </head>
+
 <body>
+
 <div id="stars"></div>
+
 <header>
-<div class="logo">TAFKIR</div>
-<button class="menu" onclick="toggleMenu()">☰</button>
+ <div class="logo">TAFKIR</div>
+ <button class="menu-button" onclick="toggleMenu()">☰</button>
 </header>
 
-<div class="drawer" id="drawer">
-<button class="close" onclick="toggleMenu()">✕</button>
-<button onclick="home()">الرئيسية</button>
-<button onclick="openChess()">دخول الشطرنج</button>
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<!-- قائمة الهاتف فارغة -->
+<aside class="drawer" id="drawer">
+ <button onclick="toggleMenu()">×</button>
+</aside>
+
+<div class="layout">
+
+ <!-- الجانب الأيمن للكمبيوتر -->
+ <aside class="sidebar">
+
+  <div class="brand-area">
+   <div class="brand-title">تفكير</div>
+   <div class="purple-line"></div>
+
+   <div class="decor">
+    <div class="rook">♜</div>
+    <div class="knight">♞</div>
+    <div class="notebook"></div>
+    <div class="notebook second"></div>
+   </div>
+  </div>
+
+  <div class="desktop-menu">
+   <button onclick="goHome()">⌂ &nbsp; الرئيسية</button>
+  </div>
+
+ </aside>
+
+ <!-- الصفحة الرئيسية -->
+ <main class="content" id="home">
+
+  <div class="welcome">WELCOME TO TAFKIR</div>
+
+  <h1>مرحبا بك في تفكير</h1>
+
+  <p class="content-description">
+   عالم جديد، أفكار جديدة، وبداية مختلفة.
+  </p>
+
+  <section class="countdown">
+
+   <h2>الوقت المتبقي لتجهيز الموقع</h2>
+
+   <div class="timer">
+
+    <div class="time-box">
+     <strong id="days">50</strong>
+     <span>يوم</span>
+    </div>
+
+    <div class="time-box">
+     <strong id="hours">00</strong>
+     <span>ساعة</span>
+    </div>
+
+    <div class="time-box">
+     <strong id="minutes">00</strong>
+     <span>دقيقة</span>
+    </div>
+
+    <div class="time-box">
+     <strong id="seconds">00</strong>
+     <span>ثانية</span>
+    </div>
+
+   </div>
+
+   <div class="countdown-caption">
+    عد تنازلي لتجهيز الموقع
+   </div>
+
+  </section>
+
+ </main>
+
 </div>
 
-<main>
-<section class="home" id="home">
-<h1>TAFKIR</h1>
-<p>مرحبا بك في عالم التفكير والتحدي</p>
-<div class="count">
-<div>الوقت المتبقي لإطلاق الموقع</div>
-<div class="timer">
-<div class="time"><strong id="days">30</strong><span>يوم</span></div>
-<div class="time"><strong id="hours">00</strong><span>ساعة</span></div>
-<div class="time"><strong id="minutes">00</strong><span>دقيقة</span></div>
-<div class="time"><strong id="seconds">00</strong><span>ثانية</span></div>
-</div>
-<div class="caption">عد تنازلي لتجهيز الأخير للموقع</div>
-</div>
-</section>
-
-<section id="chessPage">
-<h2>♟ الشطرنج</h2>
-<div class="buttons">
-<button class="action primary" onclick="setMode('robot')">اللعب مع الروبوت</button>
-<button class="action" onclick="setMode('two')">اللعب ثنائي</button>
-<button class="action" onclick="resetGame()">إعادة اللعب</button>
-<button class="action" onclick="home()">رجوع</button>
-</div>
-<div class="status" id="status">اختار طريقة اللعب</div>
-<div class="boardwrap"><div class="board" id="board"></div></div>
-</section>
-</main>
-
-<footer>جميع الحقوق محفوظة © 2026 — saadin ouahibi</footer>
+<footer>
+ جميع الحقوق محفوظة © 2026 — saadin ouahibi
+</footer>
 
 <script>
-const endDate=new Date("2026-12-26T00:00:00");
-function countdown(){
-let s=Math.max(0,Math.floor((endDate-Date.now())/1000));
-document.getElementById("days").textContent=Math.floor(s/86400);
-document.getElementById("hours").textContent=String(Math.floor(s%86400/3600)).padStart(2,"0");
-document.getElementById("minutes").textContent=String(Math.floor(s%3600/60)).padStart(2,"0");
-document.getElementById("seconds").textContent=String(s%60).padStart(2,"0");
-}
-countdown();setInterval(countdown,1000);
 
-function toggleMenu(){document.getElementById("drawer").classList.toggle("open")}
-function home(){
-document.getElementById("home").style.display="block";
-document.getElementById("chessPage").style.display="none";
-document.getElementById("drawer").classList.remove("open");
-}
-function openChess(){
-document.getElementById("home").style.display="none";
-document.getElementById("chessPage").style.display="block";
-document.getElementById("drawer").classList.remove("open");
-render();
+/* القائمة */
+function toggleMenu(){
+ document.getElementById("drawer").classList.toggle("open");
+ document.getElementById("overlay").classList.toggle("show");
 }
 
-const symbols={wk:"♔",wq:"♕",wr:"♖",wb:"♗",wn:"♘",wp:"♙",bk:"♚",bq:"♛",br:"♜",bb:"♝",bn:"♞",bp:"♟"};
-let board=[],selected=null,turn="w",mode="two",busy=false;
+function goHome(){
+ document.getElementById("drawer").classList.remove("open");
+ document.getElementById("overlay").classList.remove("show");
+}
 
-function resetGame(){
-let back=["r","n","b","q","k","b","n","r"];
-board=Array.from({length:8},()=>Array(8).fill(null));
-for(let c=0;c<8;c++){
-board[0][c]="b"+back[c];board[1][c]="bp";
-board[6][c]="wp";board[7][c]="w"+back[c];
+/* العد التنازلي: 50 يوم من تاريخ بداية الموقع */
+const startDate = new Date("2026-11-26T00:00:00");
+const endDate = new Date(startDate.getTime() + 50 * 24 * 60 * 60 * 1000);
+
+function updateCountdown(){
+
+ let remaining = Math.max(0,endDate-Date.now());
+ let totalSeconds = Math.floor(remaining/1000);
+
+ document.getElementById("days").textContent =
+  Math.floor(totalSeconds/86400);
+
+ document.getElementById("hours").textContent =
+  String(Math.floor(totalSeconds%86400/3600)).padStart(2,"0");
+
+ document.getElementById("minutes").textContent =
+  String(Math.floor(totalSeconds%3600/60)).padStart(2,"0");
+
+ document.getElementById("seconds").textContent =
+  String(totalSeconds%60).padStart(2,"0");
 }
-selected=null;turn="w";busy=false;
-document.getElementById("status").textContent="دور الأبيض";
-render();
-}
-function setMode(m){mode=m;resetGame();document.getElementById("status").textContent=m==="robot"?"أنت الأبيض ضد الروبوت الأسود":"اللعب ثنائي: الأبيض ضد الأسود"}
-function legal(fr,fc,tr,tc){
-let p=board[fr][fc];if(!p||!board[tr]||fr===tr&&fc===tc)return false;
-let q=board[tr][tc];if(q&&q[0]===p[0])return false;
-let dr=tr-fr,dc=tc-fc,t=p[1],dir=p[0]==="w"?-1:1;
-if(t==="p"){
-if(dc===0&&!q&&dr===dir)return true;
-if(dc===0&&!q&&fr===(p[0]==="w"?6:1)&&dr===2*dir&&!board[fr+dir][fc])return true;
-return Math.abs(dc)===1&&dr===dir&&!!q;
-}
-if(t==="n")return Math.abs(dr)*Math.abs(dc)===2;
-if(t==="k")return Math.max(Math.abs(dr),Math.abs(dc))===1;
-let diagonal=Math.abs(dr)===Math.abs(dc)&&dr!==0;
-let straight=(dr===0&&dc!==0)||(dc===0&&dr!==0);
-if(t==="b"&&!diagonal||t==="r"&&!straight||t==="q"&&!diagonal&&!straight)return false;
-let sr=Math.sign(dr),sc=Math.sign(dc),r=fr+sr,c=fc+sc;
-while(r!==tr||c!==tc){if(board[r][c])return false;r+=sr;c+=sc}
-return true;
-}
-function sound(){
-try{
-let a=new AudioContext(),o=a.createOscillator(),g=a.createGain();
-o.frequency.value=500;g.gain.value=.04;o.connect(g);g.connect(a.destination);
-o.start();g.gain.exponentialRampToValueAtTime(.001,a.currentTime+.1);o.stop(a.currentTime+.1);
-}catch(e){}
-}
-function move(fr,fc,tr,tc){
-let p=board[fr][fc];board[tr][tc]=p;board[fr][fc]=null;
-if(p==="wp"&&tr===0)board[tr][tc]="wq";
-if(p==="bp"&&tr===7)board[tr][tc]="bq";
-selected=null;turn=turn==="w"?"b":"w";sound();render();
-document.getElementById("status").textContent=turn==="w"?"دور الأبيض":"دور الأسود";
-}
-function render(){
-let el=document.getElementById("board");el.innerHTML="";
-for(let r=0;r<8;r++)for(let c=0;c<8;c++){
-let sq=document.createElement("div");
-sq.className="sq "+((r+c)%2?"dark":"light");
-if(selected&&selected[0]===r&&selected[1]===c)sq.classList.add("selected");
-if(selected&&legal(selected[0],selected[1],r,c))sq.classList.add("target");
-let p=board[r][c];
-if(p){let span=document.createElement("span");span.className="piece "+(p[0]==="w"?"white":"black");span.textContent=symbols[p];sq.appendChild(span)}
-sq.onclick=()=>clickSquare(r,c);el.appendChild(sq);
-}
-}
-function clickSquare(r,c){
-if(busy)return;
-let p=board[r][c];
-if(!selected){if(p&&p[0]===turn){selected=[r,c];render()}return}
-let [fr,fc]=selected;
-if(legal(fr,fc,r,c)){
-move(fr,fc,r,c);
-if(mode==="robot"&&turn==="b")setTimeout(robotMove,350);
-}else if(p&&p[0]===turn){selected=[r,c];render()}
-else{selected=null;render()}
-}
-function robotMove(){
-let moves=[];
-for(let r=0;r<8;r++)for(let c=0;c<8;c++)
-if(board[r][c]&&board[r][c][0]==="b")
-for(let x=0;x<8;x++)for(let y=0;y<8;y++)
-if(legal(r,c,x,y))moves.push([r,c,x,y]);
-if(!moves.length){document.getElementById("status").textContent="ما بقاتش حركات متاحة";return}
-move(...moves[Math.floor(Math.random()*moves.length)]);
-}
-resetGame();
+
+updateCountdown();
+setInterval(updateCountdown,1000);
+
 </script>
+
 </body>
 </html>
