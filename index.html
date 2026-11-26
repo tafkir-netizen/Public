@@ -1,198 +1,198 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#080808">
-<title>TAFKIR | Chess</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TAFKIR</title>
 <style>
-:root{--bg:#080808;--panel:#111;--line:#303030;--white:#f4f4f4;--muted:#aaa}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--white);font-family:Arial,Tahoma,sans-serif;min-height:100vh;overflow-x:hidden}
-#stars{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
-.star{position:absolute;background:#fff;border-radius:50%;opacity:.55;animation:twinkle 3s infinite alternate}
-@keyframes twinkle{from{opacity:.15}to{opacity:.8}}
-header{height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 6%;border-bottom:1px solid #252525;background:#080808d9;position:relative;z-index:5}
-.logo{font-weight:900;letter-spacing:3px;font-size:23px}
-nav{display:flex;gap:25px}
-nav a{color:#ddd;text-decoration:none;font-size:14px}
-.menu-btn{display:none;background:none;color:white;border:1px solid #555;border-radius:9px;padding:7px 11px;font-size:23px}
-.drawer{display:none;position:absolute;top:72px;right:0;width:220px;padding:18px;background:#111;border:1px solid #333;border-radius:0 0 0 14px;z-index:8}
-.drawer.open{display:grid;gap:18px}
-.drawer a{color:white;text-decoration:none}
-main{width:min(1000px,94%);margin:38px auto 60px}
-.hero{text-align:center;margin-bottom:28px}
-h1{font-size:clamp(26px,5vw,42px);margin:0 0 9px}
-.sub{color:#aaa;margin:0}
-.panel{background:#101010;border:1px solid #303030;border-radius:18px;padding:clamp(14px,3vw,25px);box-shadow:0 12px 40px #0008}
-.mode-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
-button{font:inherit;cursor:pointer}
-.mode{background:#eee;color:#090909;border:1px solid #eee;padding:12px 20px;border-radius:10px;font-weight:700}
-.mode.secondary{background:#111;color:#eee}
-.mode.active{outline:2px solid #aaa;outline-offset:3px}
-.status{min-height:28px;text-align:center;color:#ddd;margin:10px 0 16px;font-size:15px}
-.game-layout{display:flex;justify-content:center;align-items:center;gap:24px;flex-wrap:wrap}
-.board-wrap{width:min( min(76vw,540px), calc(100vw - 42px));}
-.board{width:100%;aspect-ratio:1;display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);border:3px solid #eee;border-radius:5px;overflow:hidden;box-shadow:0 10px 35px #0009;direction:ltr;touch-action:manipulation}
-.sq{border:0;padding:0;display:flex;align-items:center;justify-content:center;position:relative;min-width:0;min-height:0}
-.sq.light{background:#eee;color:#111}
-.sq.dark{background:#252525;color:#fff}
-.sq.selected{box-shadow:inset 0 0 0 4px #777}
-.sq.hint:after{content:"";width:23%;height:23%;border-radius:50%;background:#777b;position:absolute}
-.sq.capture:after{content:"";position:absolute;inset:4px;border:3px solid #888;border-radius:50%}
-.piece{font-family:"DejaVu Sans",serif;font-size:clamp(23px,6.2vw,53px);line-height:1;z-index:2;user-select:none;pointer-events:none;filter:drop-shadow(0 1px 1px #777)}
-.sq.light .piece{color:#111;text-shadow:0 0 1px #000}
-.sq.dark .piece{color:#fff;text-shadow:0 0 2px #000}
-.piece.moving{transition:transform .24s cubic-bezier(.2,.75,.25,1)}
-.side{width:190px;display:grid;gap:10px}
-.info{border:1px solid #333;border-radius:12px;padding:13px;background:#151515}
-.info b{display:block;margin-bottom:5px}
-.info small{color:#aaa;line-height:1.6}
-.action{background:#171717;color:white;border:1px solid #555;border-radius:9px;padding:10px}
-.action:hover,.mode.secondary:hover{background:#242424}
-footer{border-top:1px solid #252525;text-align:center;padding:23px 12px;color:#888;font-size:13px}
-.count{font-variant-numeric:tabular-nums;letter-spacing:2px;font-size:clamp(23px,5vw,36px);font-weight:bold;margin:10px 0}
-.launch{text-align:center;margin:48px auto 0;padding:24px 10px;border-top:1px solid #242424}
-.launch p{color:#aaa;margin:7px 0}
-@media(max-width:650px){header{height:62px;padding:0 5%}nav{display:none}.menu-btn{display:block}.drawer{top:62px}main{margin-top:25px}.side{width:min(100%,420px);grid-template-columns:1fr 1fr}.info{grid-column:1/-1}.board-wrap{width:min(92vw,480px)}}
+body{margin:0;background:#080b10;color:white;font-family:Arial,sans-serif;min-height:100vh}
+#stars{position:fixed;inset:0;pointer-events:none;background-image:radial-gradient(2px 2px at 20px 30px,#fff 50%,transparent),radial-gradient(1px 1px at 90px 80px,#fff 50%,transparent);background-size:180px 150px;opacity:.65;animation:stars 4s infinite alternate}
+@keyframes stars{to{opacity:.25}}
+header{height:65px;display:flex;justify-content:space-between;align-items:center;padding:0 18px;position:relative;border-bottom:1px solid #ffffff22;background:#080b10}
+.logo{font-size:24px;font-weight:bold;letter-spacing:2px}
+.menu{font-size:27px;background:#151c25;color:white;border:1px solid #ffffff33;border-radius:9px;padding:4px 12px;cursor:pointer}
+.drawer{position:fixed;z-index:5;right:-270px;top:0;width:250px;height:100vh;background:#111820;padding:20px;transition:.3s}
+.drawer.open{right:0}
+.drawer button{display:block;width:100%;padding:16px;text-align:right;background:none;color:white;border:0;border-bottom:1px solid #ffffff22;font-size:16px;cursor:pointer}
+.drawer .close{font-size:25px;text-align:left}
+main{position:relative;max-width:850px;margin:auto;padding:30px 15px}
+.home{text-align:center;padding:35px 5px}
+.home h1{font-size:55px;margin:15px}
+.home p{color:#aab4bf}
+.count{max-width:570px;margin:30px auto;background:#111820;padding:22px;border:1px solid #ffffff22;border-radius:18px}
+.timer{display:flex;justify-content:center;gap:9px;direction:ltr;flex-wrap:wrap}
+.time{background:#080d13;border:1px solid #ffffff22;padding:12px 8px;border-radius:10px;min-width:70px}
+.time strong{display:block;font-size:28px}
+.time span{font-size:12px;color:#aab4bf}
+.caption{margin-top:15px;color:#c5ced7}
+#chessPage{display:none}
+.buttons{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}
+button.action{background:#19232e;color:white;border:1px solid #ffffff33;padding:11px 15px;border-radius:9px;cursor:pointer}
+button.action.primary{background:#eee;color:#111;font-weight:bold}
+.status{margin:12px 0;color:#ddd;min-height:24px}
+.boardwrap{width:min(94vw,550px);margin:auto;background:#17212a;padding:7px;border-radius:12px}
+.board{display:grid;grid-template-columns:repeat(8,1fr);aspect-ratio:1}
+.sq{display:flex;justify-content:center;align-items:center;position:relative;cursor:pointer;aspect-ratio:1}
+.light{background:#eeeed2}.dark{background:#769656}
+.sq.selected{box-shadow:inset 0 0 0 4px #f5d66b}
+.sq.target:after{content:"";width:25%;height:25%;background:#263b1c99;border-radius:50%;position:absolute}
+.piece{font-size:clamp(25px,7vw,52px);position:relative;z-index:1;transition:transform .2s ease}
+.white{color:white;text-shadow:0 1px 2px #222}
+.black{color:#151515;text-shadow:0 1px 1px #fff8}
+footer{position:relative;text-align:center;border-top:1px solid #ffffff22;padding:22px;color:#929eaa;margin-top:30px;font-size:13px}
+@media(min-width:700px){.menu{display:block}}
 </style>
 </head>
 <body>
 <div id="stars"></div>
 <header>
-  <div class="logo">TAFKIR</div>
-  <nav><a href="#home">الرئيسية</a><a href="#chess">الشطرنج</a></nav>
-  <button class="menu-btn" id="menuBtn" aria-label="القائمة">☰</button>
-  <div class="drawer" id="drawer"><a href="#home" id="homeLink">الرئيسية</a><a href="#chess" id="chessLink">دخول الشطرنج</a></div>
+<div class="logo">TAFKIR</div>
+<button class="menu" onclick="toggleMenu()">☰</button>
 </header>
-<main id="home">
-  <section class="hero">
-    <h1>TAFKIR</h1>
-    <p class="sub">فكّر، خطّط، واربح.</p>
-  </section>
-  <section class="panel" id="chess">
-    <div class="mode-row">
-      <button class="mode active" id="robotBtn">اللعب مع الروبوت</button>
-      <button class="mode secondary" id="twoBtn">اللعب ثنائي</button>
-    </div>
-    <div class="status" id="status">اختار طريقة اللعب وابدأ المباراة.</div>
-    <div class="game-layout">
-      <div class="board-wrap"><div class="board" id="board" aria-label="رقعة الشطرنج"></div></div>
-      <aside class="side">
-        <div class="info"><b id="modeTitle">اللعب مع الروبوت</b><small id="modeDesc">أنت تلعب بالأبيض، والروبوت يلعب بالأسود.</small></div>
-        <button class="action" id="restart">إعادة المباراة ↻</button>
-        <button class="action" id="soundBtn">الصوت: شغال ♪</button>
-      </aside>
-    </div>
-  </section>
-  <section class="launch">
-    <h2>قريباً...</h2>
-    <div class="count" id="countdown">30 : 00 : 00 : 00</div>
-    <p>عد تنازلي لتجهيز الأخير للموقع</p>
-  </section>
+
+<div class="drawer" id="drawer">
+<button class="close" onclick="toggleMenu()">✕</button>
+<button onclick="home()">الرئيسية</button>
+<button onclick="openChess()">دخول الشطرنج</button>
+</div>
+
+<main>
+<section class="home" id="home">
+<h1>TAFKIR</h1>
+<p>مرحبا بك في عالم التفكير والتحدي</p>
+<div class="count">
+<div>الوقت المتبقي لإطلاق الموقع</div>
+<div class="timer">
+<div class="time"><strong id="days">30</strong><span>يوم</span></div>
+<div class="time"><strong id="hours">00</strong><span>ساعة</span></div>
+<div class="time"><strong id="minutes">00</strong><span>دقيقة</span></div>
+<div class="time"><strong id="seconds">00</strong><span>ثانية</span></div>
+</div>
+<div class="caption">عد تنازلي لتجهيز الأخير للموقع</div>
+</div>
+</section>
+
+<section id="chessPage">
+<h2>♟ الشطرنج</h2>
+<div class="buttons">
+<button class="action primary" onclick="setMode('robot')">اللعب مع الروبوت</button>
+<button class="action" onclick="setMode('two')">اللعب ثنائي</button>
+<button class="action" onclick="resetGame()">إعادة اللعب</button>
+<button class="action" onclick="home()">رجوع</button>
+</div>
+<div class="status" id="status">اختار طريقة اللعب</div>
+<div class="boardwrap"><div class="board" id="board"></div></div>
+</section>
 </main>
-<footer>© 2026 TAFKIR — جميع الحقوق محفوظة</footer>
+
+<footer>جميع الحقوق محفوظة © 2026 — saadin ouahibi</footer>
+
 <script>
-(function(){
- const stars=document.getElementById('stars');
- for(let i=0;i<65;i++){let s=document.createElement('i');s.className='star';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';s.style.width=s.style.height=(Math.random()*2+1)+'px';s.style.animationDelay=Math.random()*3+'s';stars.appendChild(s)}
- const menuBtn=document.getElementById('menuBtn'),drawer=document.getElementById('drawer');
- menuBtn.onclick=()=>drawer.classList.toggle('open');
- drawer.querySelectorAll('a').forEach(a=>a.onclick=()=>drawer.classList.remove('open'));
- const glyph={wk:'♔',wq:'♕',wr:'♖',wb:'♗',wn:'♘',wp:'♙',bk:'♚',bq:'♛',br:'♜',bb:'♝',bn:'♞',bp:'♟'};
- const initial=()=>[
- ['br','bn','bb','bq','bk','bb','bn','br'],
- Array(8).fill('bp'),Array(8).fill(null),Array(8).fill(null),
- Array(8).fill(null),Array(8).fill(null),Array(8).fill('wp'),
- ['wr','wn','wb','wq','wk','wb','wn','wr']
- ];
- let board=initial(),turn='w',selected=null,targets=[],mode='robot',sound=true,busy=false,gameOver=false;
- const el=id=>document.getElementById(id), boardEl=el('board');
- function tone(){if(!sound)return;try{let C=window.AudioContext||window.webkitAudioContext,ctx=new C(),o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.setValueAtTime(520,ctx.currentTime);o.frequency.exponentialRampToValueAtTime(360,ctx.currentTime+.08);g.gain.setValueAtTime(.08,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.12);o.connect(g);g.connect(ctx.destination);o.start();o.stop(ctx.currentTime+.13);o.onended=()=>ctx.close()}catch(e){}}
- function inside(r,c){return r>=0&&r<8&&c>=0&&c<8}
- function side(p){return p?p[0]:null}
- function pathClear(fr,fc,tr,tc){let dr=Math.sign(tr-fr),dc=Math.sign(tc-fc),r=fr+dr,c=fc+dc;while(r!==tr||c!==tc){if(board[r][c])return false;r+=dr;c+=dc}return true}
- function valid(fr,fc,tr,tc){
-   if(!inside(tr,tc)|| (fr===tr&&fc===tc))return false;
-   let p=board[fr][fc],dest=board[tr][tc];if(!p||side(dest)===side(p))return false;
-   let kind=p[1],dr=tr-fr,dc=tc-fc,ar=Math.abs(dr),ac=Math.abs(dc),forward=p[0]==='w'?-1:1;
-   if(kind==='p'){
-     if(dc===0&&!dest&&dr===forward)return true;
-     if(dc===0&&!dest&&((p[0]==='w'&&fr===6)||(p[0]==='b'&&fr===1))&&dr===2*forward&&!board[fr+forward][fc])return true;
-     if(ac===1&&dr===forward&&dest)return true;
-     return false;
-   }
-   if(kind==='n')return (ar===2&&ac===1)||(ar===1&&ac===2);
-   if(kind==='k')return ar<=1&&ac<=1;
-   if(kind==='r')return (dr===0||dc===0)&&pathClear(fr,fc,tr,tc);
-   if(kind==='b')return ar===ac&&pathClear(fr,fc,tr,tc);
-   if(kind==='q')return (dr===0||dc===0||ar===ac)&&pathClear(fr,fc,tr,tc);
-   return false;
- }
- function allMoves(color){let out=[];for(let r=0;r<8;r++)for(let c=0;c<8;c++)if(side(board[r][c])===color)for(let tr=0;tr<8;tr++)for(let tc=0;tc<8;tc++)if(valid(r,c,tr,tc))out.push([r,c,tr,tc]);return out}
- function status(msg){el('status').textContent=msg}
- function render(){
-  boardEl.innerHTML='';
-  for(let r=0;r<8;r++)for(let c=0;c<8;c++){
-   let sq=document.createElement('button');sq.className='sq '+((r+c)%2?'dark':'light');
-   if(selected&&selected[0]===r&&selected[1]===c)sq.classList.add('selected');
-   if(targets.some(m=>m[0]===r&&m[1]===c))sq.classList.add(board[r][c]?'capture':'hint');
-   sq.dataset.r=r;sq.dataset.c=c;
-   if(board[r][c]){let p=document.createElement('span');p.className='piece';p.textContent=glyph[board[r][c]];sq.appendChild(p)}
-   sq.onclick=()=>clickSquare(r,c);boardEl.appendChild(sq);
-  }
- }
- function clickSquare(r,c){
-  if(busy||gameOver||(mode==='robot'&&turn==='b'))return;
-  let p=board[r][c];
-  if(selected){
-   let [fr,fc]=selected;
-   if(targets.some(m=>m[0]===r&&m[1]===c)){move(fr,fc,r,c);return}
-   if(p&&side(p)===turn){select(r,c);return}
-   selected=null;targets=[];render();return;
-  }
-  if(p&&side(p)===turn)select(r,c);
- }
- function select(r,c){selected=[r,c];targets=[];for(let tr=0;tr<8;tr++)for(let tc=0;tc<8;tc++)if(valid(r,c,tr,tc))targets.push([tr,tc]);render()}
- function move(fr,fc,tr,tc){
-  let moving=board[fr][fc];if(!moving)return;
-  busy=true;selected=null;targets=[];
-  let destSq=boardEl.children[tr*8+tc],piece=document.createElement('span');
-  piece.className='piece moving';piece.textContent=glyph[moving];
-  let dx=fc-tc,dy=fr-tr;piece.style.transform=`translate(${dx*100}%,${dy*100}%)`;
-  destSq.innerHTML='';destSq.appendChild(piece);
-  requestAnimationFrame(()=>requestAnimationFrame(()=>piece.style.transform='translate(0,0)'));
-  window.setTimeout(()=>{
-    board[tr][tc]=moving;board[fr][fc]=null;
-    if(moving[1]==='p'&&(tr===0||tr===7))board[tr][tc]=moving[0]+'q';
-    turn=turn==='w'?'b':'w';busy=false;tone();render();
-    const moves=allMoves(turn);
-    if(!moves.length){gameOver=true;status('ما بقات حتى حركة متاحة — نهاية المباراة!');return}
-    status(turn==='w'?'دور الأبيض':'دور الأسود');
-    if(mode==='robot'&&turn==='b')window.setTimeout(robotMove,380);
-  },250);
- }
- function robotMove(){
-  if(mode!=='robot'||turn!=='b'||gameOver)return;
-  let moves=allMoves('b');if(!moves.length){gameOver=true;status('نهاية المباراة!');return}
-  let captures=moves.filter(m=>board[m[2]][m[3]]);let pool=captures.length?captures:moves;
-  let m=pool[Math.floor(Math.random()*pool.length)];move(m[0],m[1],m[2],m[3]);
- }
- function reset(){board=initial();turn='w';selected=null;targets=[];busy=false;gameOver=false;render();status(mode==='robot'?'أنت تلعب بالأبيض. دورك!':'اللعب ثنائي: الأبيض يبدأ.')}
- function setMode(next){
-  mode=next;el('robotBtn').classList.toggle('active',next==='robot');el('robotBtn').classList.toggle('secondary',next!=='robot');el('twoBtn').classList.toggle('active',next==='two');el('twoBtn').classList.toggle('secondary',next!=='two');
-  el('modeTitle').textContent=next==='robot'?'اللعب مع الروبوت':'اللعب ثنائي';
-  el('modeDesc').textContent=next==='robot'?'أنت تلعب بالأبيض، والروبوت يلعب بالأسود.':'لاعبان على نفس الجهاز: الأبيض ثم الأسود.';
-  reset();
- }
- el('robotBtn').onclick=()=>setMode('robot');el('twoBtn').onclick=()=>setMode('two');
- el('restart').onclick=reset;
- el('soundBtn').onclick=()=>{sound=!sound;el('soundBtn').textContent='الصوت: '+(sound?'شغال ♪':'مطفأ')};
- const end=new Date('2026-12-26T00:00:00').getTime();
- function tick(){let d=Math.max(0,end-Date.now()),days=Math.floor(d/86400000),h=Math.floor(d%86400000/3600000),m=Math.floor(d%3600000/60000),s=Math.floor(d%60000/1000);el('countdown').textContent=[days,h,m,s].map(n=>String(n).padStart(2,'0')).join(' : ')}
- tick();setInterval(tick,1000);
- render();status('أنت تلعب بالأبيض. دورك!');
-})();
+const endDate=new Date("2026-12-26T00:00:00");
+function countdown(){
+let s=Math.max(0,Math.floor((endDate-Date.now())/1000));
+document.getElementById("days").textContent=Math.floor(s/86400);
+document.getElementById("hours").textContent=String(Math.floor(s%86400/3600)).padStart(2,"0");
+document.getElementById("minutes").textContent=String(Math.floor(s%3600/60)).padStart(2,"0");
+document.getElementById("seconds").textContent=String(s%60).padStart(2,"0");
+}
+countdown();setInterval(countdown,1000);
+
+function toggleMenu(){document.getElementById("drawer").classList.toggle("open")}
+function home(){
+document.getElementById("home").style.display="block";
+document.getElementById("chessPage").style.display="none";
+document.getElementById("drawer").classList.remove("open");
+}
+function openChess(){
+document.getElementById("home").style.display="none";
+document.getElementById("chessPage").style.display="block";
+document.getElementById("drawer").classList.remove("open");
+render();
+}
+
+const symbols={wk:"♔",wq:"♕",wr:"♖",wb:"♗",wn:"♘",wp:"♙",bk:"♚",bq:"♛",br:"♜",bb:"♝",bn:"♞",bp:"♟"};
+let board=[],selected=null,turn="w",mode="two",busy=false;
+
+function resetGame(){
+let back=["r","n","b","q","k","b","n","r"];
+board=Array.from({length:8},()=>Array(8).fill(null));
+for(let c=0;c<8;c++){
+board[0][c]="b"+back[c];board[1][c]="bp";
+board[6][c]="wp";board[7][c]="w"+back[c];
+}
+selected=null;turn="w";busy=false;
+document.getElementById("status").textContent="دور الأبيض";
+render();
+}
+function setMode(m){mode=m;resetGame();document.getElementById("status").textContent=m==="robot"?"أنت الأبيض ضد الروبوت الأسود":"اللعب ثنائي: الأبيض ضد الأسود"}
+function legal(fr,fc,tr,tc){
+let p=board[fr][fc];if(!p||!board[tr]||fr===tr&&fc===tc)return false;
+let q=board[tr][tc];if(q&&q[0]===p[0])return false;
+let dr=tr-fr,dc=tc-fc,t=p[1],dir=p[0]==="w"?-1:1;
+if(t==="p"){
+if(dc===0&&!q&&dr===dir)return true;
+if(dc===0&&!q&&fr===(p[0]==="w"?6:1)&&dr===2*dir&&!board[fr+dir][fc])return true;
+return Math.abs(dc)===1&&dr===dir&&!!q;
+}
+if(t==="n")return Math.abs(dr)*Math.abs(dc)===2;
+if(t==="k")return Math.max(Math.abs(dr),Math.abs(dc))===1;
+let diagonal=Math.abs(dr)===Math.abs(dc)&&dr!==0;
+let straight=(dr===0&&dc!==0)||(dc===0&&dr!==0);
+if(t==="b"&&!diagonal||t==="r"&&!straight||t==="q"&&!diagonal&&!straight)return false;
+let sr=Math.sign(dr),sc=Math.sign(dc),r=fr+sr,c=fc+sc;
+while(r!==tr||c!==tc){if(board[r][c])return false;r+=sr;c+=sc}
+return true;
+}
+function sound(){
+try{
+let a=new AudioContext(),o=a.createOscillator(),g=a.createGain();
+o.frequency.value=500;g.gain.value=.04;o.connect(g);g.connect(a.destination);
+o.start();g.gain.exponentialRampToValueAtTime(.001,a.currentTime+.1);o.stop(a.currentTime+.1);
+}catch(e){}
+}
+function move(fr,fc,tr,tc){
+let p=board[fr][fc];board[tr][tc]=p;board[fr][fc]=null;
+if(p==="wp"&&tr===0)board[tr][tc]="wq";
+if(p==="bp"&&tr===7)board[tr][tc]="bq";
+selected=null;turn=turn==="w"?"b":"w";sound();render();
+document.getElementById("status").textContent=turn==="w"?"دور الأبيض":"دور الأسود";
+}
+function render(){
+let el=document.getElementById("board");el.innerHTML="";
+for(let r=0;r<8;r++)for(let c=0;c<8;c++){
+let sq=document.createElement("div");
+sq.className="sq "+((r+c)%2?"dark":"light");
+if(selected&&selected[0]===r&&selected[1]===c)sq.classList.add("selected");
+if(selected&&legal(selected[0],selected[1],r,c))sq.classList.add("target");
+let p=board[r][c];
+if(p){let span=document.createElement("span");span.className="piece "+(p[0]==="w"?"white":"black");span.textContent=symbols[p];sq.appendChild(span)}
+sq.onclick=()=>clickSquare(r,c);el.appendChild(sq);
+}
+}
+function clickSquare(r,c){
+if(busy)return;
+let p=board[r][c];
+if(!selected){if(p&&p[0]===turn){selected=[r,c];render()}return}
+let [fr,fc]=selected;
+if(legal(fr,fc,r,c)){
+move(fr,fc,r,c);
+if(mode==="robot"&&turn==="b")setTimeout(robotMove,350);
+}else if(p&&p[0]===turn){selected=[r,c];render()}
+else{selected=null;render()}
+}
+function robotMove(){
+let moves=[];
+for(let r=0;r<8;r++)for(let c=0;c<8;c++)
+if(board[r][c]&&board[r][c][0]==="b")
+for(let x=0;x<8;x++)for(let y=0;y<8;y++)
+if(legal(r,c,x,y))moves.push([r,c,x,y]);
+if(!moves.length){document.getElementById("status").textContent="ما بقاتش حركات متاحة";return}
+move(...moves[Math.floor(Math.random()*moves.length)]);
+}
+resetGame();
 </script>
 </body>
 </html>
