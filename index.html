@@ -439,127 +439,7 @@
             return r >= 0 && r < 8 && c >= 0 && c < 8;
         }
 
-        function getValidMoves(r, c) {
-            const piece = board[r][c];
-            if (!piece) return [];
-
-            const whitePiece = isWhite(piece);
-            const type = piece.toLowerCase();
-            const moves = [];
-
-            const canLand = (nr, nc) => {
-                if (!inBounds(nr, nc)) return false;
-                const target = board[nr][nc];
-                if (!target) return true;
-                return whitePiece ? isBlack(target) : isWhite(target);
-            };
-
-            const addSliding = (dirs) => {
-                for (const [dr, dc] of dirs) {
-                    let nr = r + dr;
-                    let nc = c + dc;
-                    while (inBounds(nr, nc)) {
-                        const target = board[nr][nc];
-                        if (!target) {
-                            moves.push([nr, nc]);
-                        } else {
-                            if (whitePiece ? isBlack(target) : isWhite(target)) {
-                                moves.push([nr, nc]);
-                            }
-                            break;
-                        }
-                        nr += dr;
-                        nc += dc;
-                    }
-                }
-            };
-
-            if (type === 'p') {
-                const dir = whitePiece ? -1 : 1;
-                const startRow = whitePiece ? 6 : 1;
-
-                if (inBounds(r + dir, c) && !board[r + dir][c]) {
-                    moves.push([r + dir, c]);
-                    if (r === startRow && inBounds(r + dir * 2, c) && !board[r + dir * 2][c]) {
-                        moves.push([r + dir * 2, c]);
-                    }
-                }
-
-                for (const dc of [-1, 1]) {
-                    const nr = r + dir;
-                    const nc = c + dc;
-                    if (inBounds(nr, nc) && board[nr][nc]) {
-                        if (whitePiece ? isBlack(board[nr][nc]) : isWhite(board[nr][nc])) {
-                            moves.push([nr, nc]);
-                        }
-                    }
-                }
-            } else if (type === 'n') {
-                const jumps = [
-                    [-2, -1], [-2, 1], [-1, -2], [-1, 2],
-                    [1, -2], [1, 2], [2, -1], [2, 1]
-                ];
-                for (const [dr, dc] of jumps) {
-                    const nr = r + dr;
-                    const nc = c + dc;
-                    if (canLand(nr, nc)) moves.push([nr, nc]);
-                }
-            } else if (type === 'r') {
-                addSliding([[-1, 0], [1, 0], [0, -1], [0, 1]]);
-            } else if (type === 'b') {
-                addSliding([[-1, -1], [-1, 1], [1, -1], [1, 1]]);
-            } else if (type === 'q') {
-                addSliding([
-                    [-1, 0], [1, 0], [0, -1], [0, 1],
-                    [-1, -1], [-1, 1], [1, -1], [1, 1]
-                ]);
-            } else if (type === 'k') {
-                for (let dr = -1; dr <= 1; dr++) {
-                    for (let dc = -1; dc <= 1; dc++) {
-                        if (dr !== 0 || dc !== 0) {
-                            const nr = r + dr;
-                            const nc = c + dc;
-                            if (canLand(nr, nc)) moves.push([nr, nc]);
-                        }
-                    }
-                }
-            }
-
-            return moves;
-        }
-
-        function playPieceSound(isCapture = false) {
-            try {
-                const Ctx = window.AudioContext || window.webkitAudioContext;
-                if (!Ctx) return;
-                if (!audioCtx) audioCtx = new Ctx();
-                if (audioCtx.state === 'suspended') audioCtx.resume();
-
-                const now = audioCtx.currentTime;
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-
-                osc.type = isCapture ? 'triangle' : 'sine';
-                osc.frequency.setValueAtTime(isCapture ? 240 : 190, now);
-                osc.frequency.exponentialRampToValueAtTime(isCapture ? 75 : 65, now + 0.085);
-
-                gain.gain.setValueAtTime(0.001, now);
-                gain.gain.linearRampToValueAtTime(isCapture ? 0.35 : 0.25, now + 0.01);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
-
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-
-                osc.start(now);
-                osc.stop(now + 0.095);
-            } catch (e) {}
-        }
-
-        function animatePieceSlide(fromRow, fromCol, toRow, toCol, pieceKey, isCapture) {
-            try {
-                const boardEl = document.getElementById('board');
-                const squares = boardEl ? boardEl.querySelectorAll('.square') : [];
-                const fromSq = squares[fromRow * 8 + fromCol];
+        ص                const fromSq = squares[fromRow * 8 + fromCol];
                 const toSq = squares[toRow * 8 + toCol];
 
                 if (!fromSq || !toSq) {
@@ -665,6 +545,220 @@
 
             fixBoardLayout();
         }
+        function findKing(color, stateBoard = board) {
+            const targetKing = color === 'white' ? 'K' : 'k';
+            for (let r = 0; r < 8; r++) {
+                for (let c = 0; c < 8; c++) {
+                    if (stateBoard[r][c] === targetKing) {
+                        return [r, c];
+                    }
+                }
+            }
+            return null;
+        }
+
+        function isSquareAttacked(r, c, byColor, stateBoard = board) {
+            const pawnDir = byColor === 'white' ? -1 : 1;
+            for (const dc of [-1, 1]) {
+                const pr = r - pawnDir;
+                const pc = c + dc;
+                if (inBounds(pr, pc)) {
+                    const p = stateBoard[pr][pc];
+                    if (p && (byColor === 'white' ? p === 'P' : p === 'p')) {
+                        return true;
+                    }
+                }
+            }
+
+            const knightJumps = [
+                [-2, -1], [-2, 1], [-1, -2], [-1, 2],
+                [1, -2], [1, 2], [2, -1], [2, 1]
+            ];
+            const targetKnight = byColor === 'white' ? 'N' : 'n';
+            for (const [dr, dc] of knightJumps) {
+                const nr = r + dr;
+                const nc = c + dc;
+                if (inBounds(nr, nc) && stateBoard[nr][nc] === targetKnight) {
+                    return true;
+                }
+            }
+
+            const orthoDirs = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+            const rookLike = byColor === 'white' ? ['R', 'Q'] : ['r', 'q'];
+            for (const [dr, dc] of orthoDirs) {
+                let nr = r + dr;
+                let nc = c + dc;
+                while (inBounds(nr, nc)) {
+                    const piece = stateBoard[nr][nc];
+                    if (piece) {
+                        if (rookLike.includes(piece)) return true;
+                        break;
+                    }
+                    nr += dr;
+                    nc += dc;
+                }
+            }
+
+            const diagDirs = [[-1, -1], [-1, 1], [1, -1], [1, 1]];
+            const bishopLike = byColor === 'white' ? ['B', 'Q'] : ['b', 'q'];
+            for (const [dr, dc] of diagDirs) {
+                let nr = r + dr;
+                let nc = c + dc;
+                while (inBounds(nr, nc)) {
+                    const piece = stateBoard[nr][nc];
+                    if (piece) {
+                        if (bishopLike.includes(piece)) return true;
+                        break;
+                    }
+                    nr += dr;
+                    nc += dc;
+                }
+            }
+
+            const targetKing = byColor === 'white' ? 'K' : 'k';
+            for (let dr = -1; dr <= 1; dr++) {
+                for (let dc = -1; dc <= 1; dc++) {
+                    if (dr !== 0 || dc !== 0) {
+                        const nr = r + dr;
+                        const nc = c + dc;
+                        if (inBounds(nr, nc) && stateBoard[nr][nc] === targetKing) {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        function isInCheck(color, stateBoard = board) {
+            const kingPos = findKing(color, stateBoard);
+            if (!kingPos) return false;
+            const enemyColor = color === 'white' ? 'black' : 'white';
+            return isSquareAttacked(kingPos[0], kingPos[1], enemyColor, stateBoard);
+        }
+
+        function getPseudoLegalMoves(r, c, stateBoard = board) {
+            const piece = stateBoard[r][c];
+            if (!piece) return [];
+
+            const whitePiece = isWhite(piece);
+            const type = piece.toLowerCase();
+            const moves = [];
+
+            const canLand = (nr, nc) => {
+                if (!inBounds(nr, nc)) return false;
+                const target = stateBoard[nr][nc];
+                if (!target) return true;
+                return whitePiece ? isBlack(target) : isWhite(target);
+            };
+
+            const addSliding = (dirs) => {
+                for (const [dr, dc] of dirs) {
+                    let nr = r + dr;
+                    let nc = c + dc;
+                    while (inBounds(nr, nc)) {
+                        const target = stateBoard[nr][nc];
+                        if (!target) {
+                            moves.push([nr, nc]);
+                        } else {
+                            if (whitePiece ? isBlack(target) : isWhite(target)) {
+                                moves.push([nr, nc]);
+                            }
+                            break;
+                        }
+                        nr += dr;
+                        nc += dc;
+                    }
+                }
+            };
+
+            if (type === 'p') {
+                const dir = whitePiece ? -1 : 1;
+                const startRow = whitePiece ? 6 : 1;
+
+                if (inBounds(r + dir, c) && !stateBoard[r + dir][c]) {
+                    moves.push([r + dir, c]);
+                    if (r === startRow && inBounds(r + dir * 2, c) && !stateBoard[r + dir * 2][c]) {
+                        moves.push([r + dir * 2, c]);
+                    }
+                }
+
+                for (const dc of [-1, 1]) {
+                    const nr = r + dir;
+                    const nc = c + dc;
+                    if (inBounds(nr, nc) && stateBoard[nr][nc]) {
+                        if (whitePiece ? isBlack(stateBoard[nr][nc]) : isWhite(stateBoard[nr][nc])) {
+                            moves.push([nr, nc]);
+                        }
+                    }
+                }
+            } else if (type === 'n') {
+                const jumps = [
+                    [-2, -1], [-2, 1], [-1, -2], [-1, 2],
+                    [1, -2], [1, 2], [2, -1], [2, 1]
+                ];
+                for (const [dr, dc] of jumps) {
+                    const nr = r + dr;
+                    const nc = c + dc;
+                    if (canLand(nr, nc)) moves.push([nr, nc]);
+                }
+            } else if (type === 'r') {
+                addSliding([[-1, 0], [1, 0], [0, -1], [0, 1]]);
+            } else if (type === 'b') {
+                addSliding([[-1, -1], [-1, 1], [1, -1], [1, 1]]);
+            } else if (type === 'q') {
+                addSliding([
+                    [-1, 0], [1, 0], [0, -1], [0, 1],
+                    [-1, -1], [-1, 1], [1, -1], [1, 1]
+                ]);
+            } else if (type === 'k') {
+                for (let dr = -1; dr <= 1; dr++) {
+                    for (let dc = -1; dc <= 1; dc++) {
+                        if (dr !== 0 || dc !== 0) {
+                            const nr = r + dr;
+                            const nc = c + dc;
+                            if (canLand(nr, nc)) moves.push([nr, nc]);
+                        }
+                    }
+                }
+            }
+
+            return moves;
+        }
+
+        function getValidMoves(r, c) {
+            const piece = board[r][c];
+            if (!piece) return [];
+
+            const color = isWhite(piece) ? 'white' : 'black';
+            const pseudo = getPseudoLegalMoves(r, c, board);
+
+            return pseudo.filter(([nr, nc]) => {
+                const copy = board.map(row => [...row]);
+                let moved = copy[r][c];
+                if (moved === 'P' && nr === 0) moved = 'Q';
+                if (moved === 'p' && nr === 7) moved = 'q';
+                copy[nr][nc] = moved;
+                copy[r][c] = '';
+                return !isInCheck(color, copy);
+            });
+        }
+
+        function hasAnyLegalMove(color) {
+            for (let r = 0; r < 8; r++) {
+                for (let c = 0; c < 8; c++) {
+                    const piece = board[r][c];
+                    if (!piece) continue;
+                    if ((color === 'white' && isWhite(piece)) || (color === 'black' && isBlack(piece))) {
+                        if (getValidMoves(r, c).length > 0) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
 
         function handleSquareClick(r, c) {
             if (gameOver) return;
@@ -674,33 +768,55 @@
                 const isMove = validMoves.some(m => m[0] === r && m[1] === c);
                 if (isMove) {
                     const [sr, sc] = selected;
-                    const movingPiece = board[sr][sc];
+                    let movingPiece = board[sr][sc];
                     const captured = board[r][c];
+
+                    moveHistory.push({
+                        board: board.map(row => [...row]),
+                        turn,
+                        lastMove
+                    });
+
+                    if (movingPiece === 'P' && r === 0) movingPiece = 'Q';
+                    if (movingPiece === 'p' && r === 7) movingPiece = 'q';
 
                     board[r][c] = movingPiece;
                     board[sr][sc] = '';
+                    lastMove = { from: [sr, sc], to: [r, c] };
 
                     animatePieceSlide(sr, sc, r, c, movingPiece, Boolean(captured));
-
-                    if (movingPiece === 'P' && r === 0) board[r][c] = 'Q';
-                    if (movingPiece === 'p' && r === 7) board[r][c] = 'q';
 
                     selected = null;
                     validMoves = [];
 
-                    if (captured && captured.toLowerCase() === 'k') {
+                    const nextTurn = turn === 'white' ? 'black' : 'white';
+                    const nextInCheck = isInCheck(nextTurn);
+                    const nextHasMoves = hasAnyLegalMove(nextTurn);
+
+                    if (!nextHasMoves && nextInCheck) {
                         gameOver = true;
-                        document.getElementById('turn-text').textContent = 'انتهت اللعبة!';
+                        document.getElementById('turn-text').textContent = 'كش مات!';
                         document.getElementById('game-msg').textContent =
-                            turn === 'white' ? 'فاز الأبيض ♔!' : 'فاز الأحمر ♚!';
-                        renderBoard();
+                            turn === 'white' ? 'فاز الأبيض ♔ بكش مات!' : 'فاز الأحمر ♚ بكش مات!';
+                        if (typeof renderBoard === 'function') renderBoard();
                         return;
                     }
 
-                    turn = turn === 'white' ? 'black' : 'white';
+                    if (!nextHasMoves && !nextInCheck) {
+                        gameOver = true;
+                        document.getElementById('turn-text').textContent = 'تعادل (Stalemate)';
+                        document.getElementById('game-msg').textContent = 'تعادل — لا توجد حركات متاحة.';
+                        if (typeof renderBoard === 'function') renderBoard();
+                        return;
+                    }
+
+                    turn = nextTurn;
                     document.getElementById('turn-text').textContent =
                         turn === 'white' ? 'الدور: الأبيض ♔' : 'الدور: الأحمر ♚';
-                    renderBoard();
+                    document.getElementById('game-msg').textContent = nextInCheck
+                        ? (turn === 'white' ? 'كش على الأبيض! خاصو يحرك الملك ولا يحميه.' : 'كش على الأحمر! خاصو يحرك الملك ولا يحميه.')
+                        : 'اضغط على قطعة لتحريكها (الأبيض ضد الأحمر).';
+                    if (typeof renderBoard === 'function') renderBoard();
                     return;
                 }
             }
@@ -713,7 +829,7 @@
                 validMoves = [];
             }
 
-            renderBoard();
+            if (typeof renderBoard === 'function') renderBoard();
         }
 
         function resetGame() {
@@ -721,10 +837,14 @@
             turn = 'white';
             selected = null;
             validMoves = [];
+            lastMove = null;
             gameOver = false;
+            moveHistory = [];
+            elapsedSeconds = 0;
+            document.getElementById('clock-text').textContent = '00:00';
             document.getElementById('turn-text').textContent = 'الدور: الأبيض ♔';
             document.getElementById('game-msg').textContent = 'اضغط على قطعة لتحريكها (الأبيض ضد الأحمر).';
-            renderBoard();
+            if (typeof renderBoard === 'function') renderBoard();
         }
 
         resetGame();
