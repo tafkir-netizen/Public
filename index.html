@@ -592,7 +592,9 @@
 
                     board[r][c] = movingPiece;
                     board[sr][sc] = '';
-
+            const pieceIcon = typeof pieceSymbols !== 'undefined' && pieceSymbols[movingPiece] ? pieceSymbols[movingPiece] : movingPiece;
+            animatePieceSlide(sr, sc, r, c, pieceIcon, Boolean(captured));
+                    
                     if (movingPiece === 'P' && r === 0) board[r][c] = 'Q';
                     if (movingPiece === 'p' && r === 7) board[r][c] = 'q';
 
