@@ -527,3 +527,88 @@ setInterval(updateCountdown,1000);
 
 </body>
 </html>
+
+<style>
+.language-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 15px auto;
+  direction: ltr;
+}
+
+.language-bar button {
+  background: #111;
+  color: #aaa;
+  border: 1px solid #333;
+  border-radius: 9px;
+  padding: 8px 15px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.language-bar button.active,
+.language-bar button:hover {
+  color: white;
+  border-color: #a855f7;
+  background: #251436;
+  box-shadow: 0 0 10px #a855f755;
+}
+</style>
+
+<div class="language-bar">
+  <button class="active" onclick="setSiteLanguage('ar',this)">AR</button>
+  <button onclick="setSiteLanguage('fr',this)">FR</button>
+  <button onclick="setSiteLanguage('en',this)">EN</button>
+</div>
+
+<script>
+function setSiteLanguage(lang, button) {
+  document.querySelectorAll('.language-bar button')
+    .forEach(b => b.classList.remove('active'));
+
+  button.classList.add('active');
+
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+  const words = {
+    ar: {
+      'مرحبا بك في تفكير': 'مرحبا بك في تفكير',
+      'الرئيسية': 'الرئيسية',
+      'عالم جديد، أفكار جديدة، وبداية مختلفة.': 'عالم جديد، أفكار جديدة، وبداية مختلفة.',
+      'عد تنازلي لتجهيز الموقع': 'عد تنازلي لتجهيز الموقع'
+    },
+    fr: {
+      'مرحبا بك في تفكير': 'Bienvenue sur TAFKIR',
+      'الرئيسية': 'Accueil',
+      'عالم جديد، أفكار جديدة، وبداية مختلفة.': 'Un nouveau monde, de nouvelles idées, un nouveau départ.',
+      'عد تنازلي لتجهيز الموقع': 'Compte à rebours du lancement'
+    },
+    en: {
+      'مرحبا بك في تفكير': 'Welcome to TAFKIR',
+      'الرئيسية': 'Home',
+      'عالم جديد، أفكار جديدة، وبداية مختلفة.': 'A new world, new ideas, a different beginning.',
+      'عد تنازلي لتجهيز الموقع': 'Countdown to website launch'
+    }
+  };
+
+  document.querySelectorAll('body *').forEach(el => {
+    if (el.children.length === 0 && el.dataset.originalText) {
+      el.textContent = el.dataset.originalText;
+    } else if (el.children.length === 0 && el.textContent.trim()) {
+      el.dataset.originalText = el.textContent;
+    }
+
+    if (el.children.length === 0) {
+      const original = el.dataset.originalText;
+      if (original && words[lang][original.trim()]) {
+        el.textContent = words[lang][original.trim()];
+      }
+    }
+  });
+}
+</script>
