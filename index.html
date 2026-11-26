@@ -3,166 +3,169 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TAFKIR SPACE</title>
+<meta name="theme-color" content="#050711">
+<title>TAFKIR — قريباً</title>
 <style>
+:root{--gold:#e7c778;--gold2:#b98b3c;--ink:#050711;--panel:rgba(13,17,34,.82)}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;min-height:100vh;color:#fff;font-family:Arial,sans-serif;background:radial-gradient(ellipse at bottom,#191044 0%,#080817 55%,#02020b 100%);overflow-x:hidden}
-#stars{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-.star{position:absolute;background:#fff;border-radius:50%;animation:twinkle 2s infinite alternate}
-@keyframes twinkle{from{opacity:.18;transform:scale(.6)}to{opacity:1;transform:scale(1.3)}}
-.planet{position:fixed;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#ffb36c,#a33b91 45%,#24104e 75%);box-shadow:0 0 65px #a33b9180;top:14%;left:-65px;animation:float 9s ease-in-out infinite;opacity:.55;z-index:0;pointer-events:none}
-@keyframes float{50%{transform:translate(35px,35px)}}
-header{position:relative;z-index:2;padding:20px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #ffffff20;background:#08081770;backdrop-filter:blur(8px)}
-.logo{font-size:25px;font-weight:900;letter-spacing:3px;color:#e8c46d}
-nav{display:flex;gap:22px}
-nav a,.side-menu a{color:#ddd;text-decoration:none}
-nav a:hover,.side-menu a:hover{color:#e8c46d}
-.menu-btn{display:none}
-.side-menu{position:fixed;z-index:30;top:0;right:-280px;width:260px;height:100vh;padding:70px 22px 25px;background:#100d27;border-left:1px solid #d8b45f;display:flex;flex-direction:column;gap:25px;transition:right .3s;box-shadow:-15px 0 40px #0008}
-.side-menu.open{right:0}
-#closeMenu{position:absolute;top:15px;left:15px;padding:8px 13px}
-main{position:relative;z-index:1;max-width:760px;margin:48px auto;padding:20px;text-align:center}
-.hero-icon{font-size:48px}
-.badge{color:#d8b45f;font-size:13px;letter-spacing:2px}
-h1{font-size:clamp(35px,8vw,65px);margin:10px 0;color:#f0d58a}
-.subtitle{color:#aaa;line-height:1.7}
-.card{margin-top:30px;padding:26px;border:1px solid #ffffff25;border-radius:25px;background:#ffffff0b;backdrop-filter:blur(14px);box-shadow:0 0 45px #8a48ff18;scroll-margin-top:20px}
-button{border:1px solid #ffffff30;border-radius:13px;background:#ffffff0c;color:white;padding:13px 16px;font-size:16px;cursor:pointer;transition:.2s}
-button:hover:not(:disabled){background:#7550b8;transform:translateY(-2px)}
-button:disabled{cursor:default;opacity:.8}
-.score{color:#e8c46d;font-weight:bold}
-#question{font-size:24px;margin:24px 0}
-.answers{display:grid;gap:12px}
-#next,#restart{display:none;background:linear-gradient(90deg,#7550c9,#b18a44);border:0;margin-top:20px;width:100%;font-weight:bold}
-#feedback{min-height:25px;margin-top:18px;line-height:1.6}
-.chess-board{width:min(100%,440px);aspect-ratio:1;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));grid-template-rows:repeat(8,minmax(0,1fr));margin:20px auto;border:3px solid #d8b45f;direction:ltr;overflow:hidden}
+body{
+ margin:0;min-height:100vh;color:#f7f4ec;
+ font-family:Arial,Tahoma,sans-serif;
+ background:radial-gradient(ellipse at 50% 42%,#111936 0%,#080c1b 48%,#03050d 100%);
+ overflow-x:hidden
+}
+#starfield{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.star{position:absolute;border-radius:50%;background:#fff;box-shadow:0 0 7px #c8d9ff;animation:twinkle var(--duration,3s) ease-in-out infinite alternate;animation-delay:var(--delay,0s)}
+@keyframes twinkle{0%{opacity:.15;transform:scale(.65)}100%{opacity:1;transform:scale(1.35)}}
+header{position:relative;z-index:5;min-height:76px;padding:16px clamp(18px,5vw,64px);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff16;background:#05071175;backdrop-filter:blur(12px)}
+.logo{font-weight:900;letter-spacing:4px;font-size:25px;color:var(--gold);text-decoration:none}
+.desktop-nav{display:flex;align-items:center;gap:28px}
+.desktop-nav a{color:#d9d9e3;text-decoration:none;font-size:14px;transition:.2s}
+.desktop-nav a:hover{color:var(--gold)}
+.menu-btn{display:none;background:transparent;border:1px solid #ffffff30;border-radius:12px;color:white;font-size:25px;padding:5px 12px;cursor:pointer}
+.menu-backdrop{position:fixed;inset:0;background:#0009;z-index:19;opacity:0;visibility:hidden;transition:.25s}
+.menu-backdrop.show{opacity:1;visibility:visible}
+.side-menu{position:fixed;z-index:20;top:0;right:0;width:min(300px,82vw);height:100dvh;padding:75px 24px 25px;background:#0c1022;border-left:1px solid #c9a65b55;transform:translateX(105%);transition:transform .28s;box-shadow:-20px 0 60px #0008;display:flex;flex-direction:column;gap:20px}
+.side-menu.open{transform:translateX(0)}
+.side-menu a{padding:15px 13px;color:#f2ead7;text-decoration:none;border:1px solid #ffffff15;border-radius:12px;background:#ffffff08}
+.side-menu a:hover{border-color:#d8b45f77;color:var(--gold)}
+.close-menu{position:absolute;top:17px;left:18px;background:#ffffff10;border:0;font-size:20px}
+main{position:relative;z-index:1;min-height:calc(100vh - 140px);display:flex;align-items:center;justify-content:center;padding:55px 18px}
+.launch{width:min(850px,100%);text-align:center;padding:clamp(26px,5vw,55px) clamp(16px,4vw,42px);border:1px solid #d8b45f3b;border-radius:28px;background:linear-gradient(145deg,#10172acc,#090d1dcc);box-shadow:0 20px 90px #0008,0 0 55px #8c72db12;backdrop-filter:blur(10px)}
+.eyebrow{color:var(--gold);font-size:12px;letter-spacing:4px;font-weight:bold}
+h1{margin:18px 0 8px;font-size:clamp(43px,9vw,82px);letter-spacing:5px;color:#f1d58e;text-shadow:0 0 32px #e7c77825}
+.lead{margin:0 auto;color:#c5c8d5;font-size:clamp(15px,2.5vw,19px);line-height:1.9}
+.status{display:inline-flex;align-items:center;gap:9px;margin:27px 0 22px;padding:9px 16px;border:1px solid #d8b45f55;border-radius:99px;color:#e8d39d;font-size:13px;background:#d8b45f0c}
+.status-dot{width:7px;height:7px;border-radius:50%;background:#e7c778;box-shadow:0 0 12px #e7c778;animation:pulse 1.5s infinite}
+@keyframes pulse{50%{opacity:.3;transform:scale(.7)}}
+.countdown{direction:ltr;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(8px,2vw,18px);max-width:650px;margin:8px auto 22px}
+.time-box{padding:clamp(13px,3vw,22px) 6px;border:1px solid #ffffff20;border-radius:17px;background:linear-gradient(180deg,#ffffff0c,#ffffff04);box-shadow:inset 0 1px #ffffff0a}
+.number{display:block;color:#f4d990;font-size:clamp(32px,7vw,58px);font-weight:800;font-variant-numeric:tabular-nums;line-height:1.15}
+.unit{display:block;margin-top:9px;color:#aeb3c5;font-size:clamp(11px,2vw,14px)}
+.caption{margin:22px 0 0;color:#e4d5b3;font-size:clamp(16px,3vw,21px);font-weight:bold}
+.small-note{margin:14px 0 0;color:#858ca3;font-size:12px;line-height:1.7}
+footer{position:relative;z-index:1;text-align:center;color:#6f758a;padding:18px 12px 25px;font-size:12px}
+#chessPage{display:none;position:relative;z-index:2;max-width:650px;width:calc(100% - 28px);margin:35px auto 65px;padding:25px 18px;border:1px solid #d8b45f44;border-radius:23px;background:var(--panel);backdrop-filter:blur(12px);text-align:center;box-shadow:0 20px 70px #0008}
+#chessPage.show{display:block}
+#chessPage h2{color:var(--gold);margin-top:0}
+#chessPage p{color:#b9bfd0;line-height:1.7}
+.chess-board{width:min(100%,440px);aspect-ratio:1;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));grid-template-rows:repeat(8,minmax(0,1fr));margin:20px auto;border:3px solid var(--gold2);direction:ltr;overflow:hidden}
 .chess-cell{display:flex;align-items:center;justify-content:center;min-width:0;min-height:0;font-size:clamp(19px,6vw,42px);cursor:pointer;user-select:none}
 .light{background:#e6d5b5;color:#171323}.dark{background:#57416e;color:white}
 .selected{outline:3px solid #ffd45c;outline-offset:-3px}
-#chessStatus{color:#e8c46d;min-height:24px}
-footer{position:relative;z-index:1;text-align:center;color:#777;padding:25px}
-@media(max-width:600px){header{padding:16px 18px}nav{display:none}.menu-btn{display:block;position:fixed;top:12px;right:12px;z-index:20;background:#251747;font-size:24px;padding:7px 13px}.logo{margin-right:55px}main{margin:28px auto;padding:14px}.card{padding:19px}.chess-cell{font-size:clamp(18px,8vw,36px)}}
+.action{border:1px solid #d8b45f88;border-radius:12px;background:linear-gradient(90deg,#8c6a2d,#b28b48);color:#fff;padding:12px 20px;font-size:15px;cursor:pointer}
+.back-btn{background:#ffffff0c;border:1px solid #ffffff30;margin-bottom:15px}
+@media(max-width:650px){.desktop-nav{display:none}.menu-btn{display:block}.logo{font-size:22px}main{min-height:calc(100vh - 125px);padding:28px 13px}.launch{border-radius:22px}.countdown{gap:7px}.time-box{border-radius:13px}}
 </style>
 </head>
 <body>
-<div id="stars"></div><div class="planet"></div>
+<div id="starfield" aria-hidden="true"></div>
 <header>
- <div class="logo">✦ TAFKIR</div>
- <nav><a href="#">الرئيسية</a><a href="#game">تحدي الأسئلة</a><a href="#chess">الشطرنج</a></nav>
+ <a class="logo" href="#" id="homeLogo">✦ TAFKIR</a>
+ <nav class="desktop-nav">
+  <a href="#" id="homeLink">الرئيسية</a>
+  <a href="#chess" id="desktopChess">♟ الشطرنج</a>
+ </nav>
+ <button class="menu-btn" id="menuBtn" aria-label="فتح القائمة">☰</button>
 </header>
-<button id="menuBtn" class="menu-btn" aria-label="فتح القائمة">☰</button>
-<div id="sideMenu" class="side-menu">
- <button id="closeMenu" aria-label="إغلاق القائمة">✕</button>
- <a href="#">🏠 الرئيسية</a><a href="#game">🧠 تحدي الأسئلة</a><a href="#chess">♟️ الشطرنج</a>
-</div>
 
-<main>
- <div class="hero-icon">🚀</div>
- <div class="badge">WELCOME TO THE GALAXY</div>
- <h1>TAFKIR SPACE</h1>
- <p class="subtitle">اختبر ذكاءك وانطلق نحو النجوم!</p>
+<div class="menu-backdrop" id="menuBackdrop"></div>
+<aside class="side-menu" id="sideMenu" aria-label="القائمة الرئيسية">
+ <button class="close-menu" id="closeMenu" aria-label="إغلاق">✕</button>
+ <a href="#" class="homeMenu">🏠 الرئيسية</a>
+ <a href="#chess" class="chessMenu">♟️ دخول الشطرنج</a>
+</aside>
 
- <section class="card" id="game">
-  <div class="score">⭐ النقاط: <span id="score">0</span></div>
-  <p class="badge" id="progress">السؤال 1 من 5</p>
-  <h2 id="question">شنو هي عاصمة المغرب؟</h2>
-  <div class="answers" id="answers"></div>
-  <p id="feedback"></p>
-  <button id="next">السؤال التالي ←</button>
-  <div id="result" style="display:none">
-   <h2>🏆 انتهى التحدي!</h2><h1 id="finalScore"></h1><p id="message"></p>
-   <button id="restart">🔄 العب من جديد</button>
+<main id="homePage">
+ <section class="launch">
+  <div class="eyebrow">A NEW EXPERIENCE IS COMING</div>
+  <h1>TAFKIR</h1>
+  <p class="lead">كنوجدو ليكم تجربة جديدة ومميزة.<br>الموقع غادي يكون متاح قريباً!</p>
+  <div class="status"><span class="status-dot"></span> التحضيرات الأخيرة جارية</div>
+  <div class="countdown" aria-label="العد التنازلي لإطلاق الموقع">
+   <div class="time-box"><span class="number" id="days">30</span><span class="unit">يوم</span></div>
+   <div class="time-box"><span class="number" id="hours">00</span><span class="unit">ساعة</span></div>
+   <div class="time-box"><span class="number" id="minutes">00</span><span class="unit">دقيقة</span></div>
+   <div class="time-box"><span class="number" id="seconds">00</span><span class="unit">ثانية</span></div>
   </div>
- </section>
-
- <section class="card" id="chess">
-  <h2>♟️ TAFKIR CHESS</h2>
-  <p class="subtitle">لعب الشطرنج ضد الكمبيوتر — اختار قطعة بيضاء ثم اختار المربع اللي بغيتها تمشي ليه.</p>
-  <div id="chessBoard" class="chess-board"></div>
-  <p id="chessStatus">دورك: الأبيض</p>
-  <button id="newChess">🔄 لعبة جديدة</button>
+  <p class="caption">عد تنازلي لتجهيز الأخير للموقع</p>
+  <p class="small-note" id="launchMessage">استعدوا... TAFKIR قريباً بين أيديكم ✦</p>
  </section>
 </main>
-<footer>TAFKIR SPACE © 2026 — Explore the universe ✨</footer>
+
+<section id="chessPage">
+ <button class="action back-btn" id="backHome">← الرجوع للرئيسية</button>
+ <h2>♟️ TAFKIR CHESS</h2>
+ <p>اختار قطعة بيضاء، ومن بعد اختار المربع اللي بغيتي تمشي ليه.</p>
+ <div id="chessBoard" class="chess-board"></div>
+ <p id="chessStatus">دورك: الأبيض</p>
+ <button class="action" id="newChess">لعبة جديدة</button>
+</section>
+<footer>© 2026 TAFKIR — قريباً</footer>
 
 <script>
-// نجوم متحركة
-const stars=document.getElementById("stars");
-for(let i=0;i<145;i++){
- const s=document.createElement("div");s.className="star";
- s.style.left=Math.random()*100+"%";s.style.top=Math.random()*100+"%";
- const size=Math.random()*3+1;s.style.width=size+"px";s.style.height=size+"px";
- s.style.animationDelay=Math.random()*3+"s";stars.appendChild(s);
+// نجوم فقط: بلا كواكب أو عناصر فضائية إضافية
+const starfield=document.getElementById('starfield');
+for(let i=0;i<170;i++){
+ const star=document.createElement('i');star.className='star';
+ const size=Math.random()*2.2+.6;
+ star.style.width=size+'px';star.style.height=size+'px';
+ star.style.left=(Math.random()*100)+'%';star.style.top=(Math.random()*100)+'%';
+ star.style.setProperty('--duration',(2+Math.random()*4)+'s');
+ star.style.setProperty('--delay',(-Math.random()*5)+'s');
+ starfield.appendChild(star);
 }
 
-// القائمة الجانبية
-const sideMenu=document.getElementById("sideMenu");
-document.getElementById("menuBtn").onclick=()=>sideMenu.classList.toggle("open");
-document.getElementById("closeMenu").onclick=()=>sideMenu.classList.remove("open");
-sideMenu.querySelectorAll("a").forEach(a=>a.onclick=()=>sideMenu.classList.remove("open"));
-
-// لعبة الأسئلة
-const questions=[
- {q:"شنو هي عاصمة المغرب؟",a:["الرباط","طنجة","فاس"],c:0},
- {q:"شحال من ضلع عند المثلث؟",a:["4","3","5"],c:1},
- {q:"شنو هو الكوكب الأحمر؟",a:["الأرض","المشتري","المريخ"],c:2},
- {q:"شحال حاصل 9 × 8؟",a:["72","81","64"],c:0},
- {q:"شنو أكبر محيط فالعالم؟",a:["الأطلسي","الهندي","الهادئ"],c:2}
-];
-let qIndex=0,score=0,answered=false;
-const questionEl=document.getElementById("question"),answersEl=document.getElementById("answers");
-const feedback=document.getElementById("feedback"),next=document.getElementById("next");
-function showQuestion(){
- answered=false;const q=questions[qIndex];
- document.getElementById("progress").textContent=`السؤال ${qIndex+1} من ${questions.length}`;
- questionEl.textContent=q.q;answersEl.innerHTML="";feedback.textContent="";next.style.display="none";
- q.a.forEach((answer,i)=>{const btn=document.createElement("button");btn.textContent=answer;btn.onclick=()=>chooseAnswer(i);answersEl.appendChild(btn)});
+// العد التنازلي: موعد إطلاق موحّد بعد 30 يوماً من تاريخ إنشاء هذه النسخة
+const launchDate=new Date('2026-12-26T00:00:00');
+const pad=n=>String(n).padStart(2,'0');
+function updateCountdown(){
+ let diff=launchDate.getTime()-Date.now();
+ if(diff<=0){
+  ['days','hours','minutes','seconds'].forEach(id=>document.getElementById(id).textContent='00');
+  document.getElementById('launchMessage').textContent='حان وقت الإطلاق! ✦';
+  return;
+ }
+ const d=Math.floor(diff/86400000);diff%=86400000;
+ const h=Math.floor(diff/3600000);diff%=3600000;
+ const m=Math.floor(diff/60000);const s=Math.floor((diff%60000)/1000);
+ document.getElementById('days').textContent=pad(d);
+ document.getElementById('hours').textContent=pad(h);
+ document.getElementById('minutes').textContent=pad(m);
+ document.getElementById('seconds').textContent=pad(s);
 }
-function chooseAnswer(choice){
- if(answered)return;answered=true;const correct=questions[qIndex].c;
- [...answersEl.children].forEach((b,i)=>{b.disabled=true;if(i===correct)b.style.background="#176c4b";if(i===choice&&choice!==correct)b.style.background="#793b4a"});
- if(choice===correct){score++;document.getElementById("score").textContent=score;feedback.textContent="🎉 جواب صحيح! ممتاز";}
- else feedback.textContent="❌ الجواب الصحيح هو: "+questions[qIndex].a[correct];
- next.textContent=qIndex===questions.length-1?"شوف النتيجة 🏆":"السؤال التالي ←";next.style.display="block";
-}
-next.onclick=()=>{
- qIndex++;
- if(qIndex<questions.length){showQuestion();return}
- questionEl.style.display="none";answersEl.style.display="none";next.style.display="none";feedback.style.display="none";document.getElementById("progress").style.display="none";
- document.getElementById("result").style.display="block";document.getElementById("finalScore").textContent=score+"/5";
- document.getElementById("message").textContent=score===5?"أسطورة الفضاء! 🌟":score>=3?"ممتاز! عندك معلومات زوينة 🚀":"حاول مرة أخرى، البطل ما كيستسلمش!";
- document.getElementById("restart").style.display="block";
-};
-document.getElementById("restart").onclick=()=>{
- qIndex=0;score=0;document.getElementById("score").textContent="0";
- questionEl.style.display="block";answersEl.style.display="grid";feedback.style.display="block";document.getElementById("progress").style.display="block";
- document.getElementById("result").style.display="none";document.getElementById("restart").style.display="none";showQuestion();
-};
-showQuestion();
+updateCountdown();setInterval(updateCountdown,1000);
 
-// شطرنج تجريبي: حركات القطع الأساسية، بدون التبييت والترقية والتحقق من كش مات.
-const initial=[
-"♜","♞","♝","♛","♚","♝","♞","♜",
-"♟","♟","♟","♟","♟","♟","♟","♟",
-"","","","","","","","",
-"","","","","","","","",
-"","","","","","","","",
-"","","","","","","","",
-"♙","♙","♙","♙","♙","♙","♙","♙",
-"♖","♘","♗","♕","♔","♗","♘","♖"
-];
+// القائمة وفتح صفحة الشطرنج فقط عند اختيارها
+const sideMenu=document.getElementById('sideMenu'),backdrop=document.getElementById('menuBackdrop');
+function closeMenu(){sideMenu.classList.remove('open');backdrop.classList.remove('show')}
+function openMenu(){sideMenu.classList.add('open');backdrop.classList.add('show')}
+document.getElementById('menuBtn').onclick=openMenu;
+document.getElementById('closeMenu').onclick=closeMenu;
+backdrop.onclick=closeMenu;
+function showHome(){closeMenu();document.getElementById('homePage').style.display='flex';document.getElementById('chessPage').classList.remove('show');window.scrollTo({top:0,behavior:'smooth'})}
+function showChess(){closeMenu();document.getElementById('homePage').style.display='none';document.getElementById('chessPage').classList.add('show');window.scrollTo({top:0,behavior:'smooth'});drawChess()}
+document.querySelectorAll('.homeMenu').forEach(a=>a.onclick=e=>{e.preventDefault();showHome()});
+document.querySelectorAll('.chessMenu').forEach(a=>a.onclick=e=>{e.preventDefault();showChess()});
+document.getElementById('desktopChess').onclick=e=>{e.preventDefault();showChess()};
+document.getElementById('homeLink').onclick=e=>{e.preventDefault();showHome()};
+document.getElementById('homeLogo').onclick=e=>{e.preventDefault();showHome()};
+document.getElementById('backHome').onclick=showHome;
+
+// شطرنج تجريبي بحركات أساسية، والكمبيوتر يختار حركة قانونية عشوائية
+const initial=['♜','♞','♝','♛','♚','♝','♞','♜','♟','♟','♟','♟','♟','♟','♟','♟','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','♙','♙','♙','♙','♙','♙','♙','♙','♖','♘','♗','♕','♔','♗','♘','♖'];
 let board=[...initial],selected=-1,whiteTurn=true,gameOver=false;
-const chessBoard=document.getElementById("chessBoard"),chessStatus=document.getElementById("chessStatus");
-function isWhite(p){return "♙♖♘♗♕♔".includes(p)}
-function isBlack(p){return "♟♜♝♛♚".includes(p)}
+const chessBoard=document.getElementById('chessBoard'),chessStatus=document.getElementById('chessStatus');
+function isWhite(p){return '♙♖♘♗♕♔'.includes(p)}
+function isBlack(p){return '♟♜♝♛♚'.includes(p)}
 function sameSide(a,b){return !!a&&!!b&&isWhite(a)===isWhite(b)}
 function drawChess(){
- chessBoard.innerHTML="";
+ chessBoard.innerHTML='';
  board.forEach((piece,i)=>{
-  const cell=document.createElement("div");
-  cell.className="chess-cell "+((Math.floor(i/8)+i%8)%2?"dark":"light");
-  if(i===selected)cell.classList.add("selected");
+  const cell=document.createElement('div');
+  cell.className='chess-cell '+((Math.floor(i/8)+i%8)%2?'dark':'light');
+  if(i===selected)cell.classList.add('selected');
   cell.textContent=piece;cell.onclick=()=>clickChess(i);chessBoard.appendChild(cell);
  });
 }
@@ -174,22 +177,21 @@ function legalMoves(from){
   const to=rr*8+cc;if(sameSide(p,board[to]))return false;
   moves.push(to);return !board[to];
  };
- if(p==="♙"||p==="♟"){
-  const d=white?-1:1,rr=r+d;
-  if(rr>=0&&rr<8&&!board[rr*8+c]){
-   moves.push(rr*8+c);
-   const start=white?6:1;
-   if(r===start&&!board[(r+2*d)*8+c])moves.push((r+2*d)*8+c);
+ if(p==='♙'||p==='♟'){
+  const d=white?-1:1,nr=r+d;
+  if(nr>=0&&nr<8&&!board[nr*8+c]){
+   moves.push(nr*8+c);
+   if(r===(white?6:1)&&!board[(r+2*d)*8+c])moves.push((r+2*d)*8+c);
   }
-  for(const dc of [-1,1]){const nr=r+d,nc=c+dc;if(nr>=0&&nr<8&&nc>=0&&nc<8&&board[nr*8+nc]&&!sameSide(p,board[nr*8+nc]))moves.push(nr*8+nc)}
+  for(const dc of [-1,1]){const rr=r+d,cc=c+dc;if(rr>=0&&rr<8&&cc>=0&&cc<8&&board[rr*8+cc]&&!sameSide(p,board[rr*8+cc]))moves.push(rr*8+cc)}
  }else{
   let dirs=[];
-  if(p==="♘"||p==="♞")dirs=[[-2,-1],[-2,1],[-1,-2],[-1,2],[1,-2],[1,2],[2,-1],[2,1]];
-  if(p==="♔"||p==="♚")dirs=[[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];
-  if("♖♜".includes(p))dirs=[[-1,0],[1,0],[0,-1],[0,1]];
-  if("♗♝".includes(p))dirs=[[-1,-1],[-1,1],[1,-1],[1,1]];
-  if("♕♛".includes(p))dirs=[[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];
-  const sliding="♖♜♗♝♕♛".includes(p);
+  if(p==='♘'||p==='♞')dirs=[[-2,-1],[-2,1],[-1,-2],[-1,2],[1,-2],[1,2],[2,-1],[2,1]];
+  if(p==='♔'||p==='♚')dirs=[[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];
+  if('♖♜'.includes(p))dirs=[[-1,0],[1,0],[0,-1],[0,1]];
+  if('♗♝'.includes(p))dirs=[[-1,-1],[-1,1],[1,-1],[1,1]];
+  if('♕♛'.includes(p))dirs=[[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];
+  const sliding='♖♜♗♝♕♛'.includes(p);
   for(const [dr,dc] of dirs){let rr=r+dr,cc=c+dc;while(add(rr,cc)){if(!sliding)break;rr+=dr;cc+=dc}}
  }
  return moves;
@@ -199,8 +201,8 @@ function clickChess(i){
  if(selected<0){if(board[i]&&isWhite(board[i]))selected=i}
  else if(i===selected)selected=-1;
  else if(legalMoves(selected).includes(i)){
-  if("♚♛♜♝♞♟".includes(board[i])){gameOver=true;board[i]=board[selected];board[selected]="";drawChess();chessStatus.textContent="🏆 فزتي! الكمبيوتر خسر.";return}
-  board[i]=board[selected];board[selected]="";selected=-1;whiteTurn=false;drawChess();chessStatus.textContent="دور الكمبيوتر...";setTimeout(computerMove,450);return;
+  if(board[i]==='♚'){board[i]=board[selected];board[selected]='';drawChess();chessStatus.textContent='🏆 ربحت الجولة!';gameOver=true;return}
+  board[i]=board[selected];board[selected]='';selected=-1;whiteTurn=false;drawChess();chessStatus.textContent='دور الكمبيوتر...';setTimeout(computerMove,450);return;
  }else if(board[i]&&isWhite(board[i]))selected=i;
  drawChess();
 }
@@ -208,16 +210,15 @@ function computerMove(){
  if(gameOver)return;
  const moves=[];
  board.forEach((p,i)=>{if(p&&isBlack(p))legalMoves(i).forEach(to=>moves.push([i,to]))});
- if(!moves.length){chessStatus.textContent="ما بقاتش حركات للكمبيوتر.";gameOver=true;return}
+ if(!moves.length){chessStatus.textContent='ما بقاتش حركات للكمبيوتر.';gameOver=true;return}
  const [from,to]=moves[Math.floor(Math.random()*moves.length)];
- if("♔♕♖♗♘♙".includes(board[to])){board[to]=board[from];board[from]="";drawChess();chessStatus.textContent="الكمبيوتر ربح هاد الجولة.";gameOver=true;return}
- board[to]=board[from];board[from]="";
- // ترقية البيدق تلقائياً إلى وزير
- if(board[to]==="♟"&&Math.floor(to/8)===7)board[to]="♛";
- whiteTurn=true;chessStatus.textContent="دورك: الأبيض";drawChess();
+ if(board[to]==='♔'){board[to]=board[from];board[from]='';drawChess();chessStatus.textContent='الكمبيوتر ربح هاد الجولة.';gameOver=true;return}
+ board[to]=board[from];board[from]='';
+ if(board[to]==='♟'&&Math.floor(to/8)===7)board[to]='♛';
+ whiteTurn=true;chessStatus.textContent='دورك: الأبيض';drawChess();
 }
-function resetChess(){board=[...initial];selected=-1;whiteTurn=true;gameOver=false;chessStatus.textContent="دورك: الأبيض";drawChess()}
-document.getElementById("newChess").onclick=resetChess;
+function resetChess(){board=[...initial];selected=-1;whiteTurn=true;gameOver=false;chessStatus.textContent='دورك: الأبيض';drawChess()}
+document.getElementById('newChess').onclick=resetChess;
 drawChess();
 </script>
 </body>
