@@ -1,854 +1,224 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TAFKIR</title>
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            padding: 0 12px 28px;
-            background-color: #09090b;
-            color: #f5f5f7;
-            font-family: system-ui, -apple-system, sans-serif;
-            text-align: center;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        #bg-dots {
-            position: fixed;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .tafkir-nav {
-            max-width: 720px;
-            margin: 14px auto 18px;
-            padding: 10px 16px;
-            border-radius: 14px;
-            background: rgba(20, 20, 24, 0.88);
-            border: 1px solid rgba(255, 42, 42, 0.35);
-            backdrop-filter: blur(8px);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .tafkir-brand {
-            font-size: 18px;
-            font-weight: 900;
-            letter-spacing: 1.5px;
-            color: #ff2a2a;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .tafkir-menu {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .nav-btn {
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 700;
-            color: #e4e4e7;
-            background: #1b1b20;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            cursor: pointer;
-        }
-
-        .nav-btn.active,
-        .nav-btn:hover {
-            color: #ffffff;
-            background: rgba(255, 42, 42, 0.24);
-            border-color: rgba(255, 42, 42, 0.65);
-        }
-
-        .hub-wrapper {
-            max-width: 520px;
-            margin: 24px auto;
-            padding: 24px 18px;
-            border-radius: 18px;
-            background: rgba(20, 20, 24, 0.92);
-            border: 1px solid rgba(255, 42, 42, 0.35);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
-        }
-
-        .hub-title {
-            margin: 0 0 8px;
-            font-size: 26px;
-            font-weight: 900;
-            color: #ff2a2a;
-        }
-
-        .hub-sub {
-            margin: 0 0 20px;
-            font-size: 14px;
-            color: #c4c4cc;
-        }
-
-        .menu-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-        }
-
-        .choice-card {
-            width: 100%;
-            padding: 16px;
-            border-radius: 14px;
-            background: #18181d;
-            border: 1px solid rgba(255, 42, 42, 0.35);
-            color: #f5f5f7;
-            text-align: right;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-        }
-
-        .choice-card:hover {
-            background: rgba(255, 42, 42, 0.14);
-            border-color: #ff2a2a;
-        }
-
-        .choice-name {
-            font-size: 16px;
-            font-weight: 800;
-            color: #ffffff;
-        }
-
-        .choice-desc {
-            font-size: 12px;
-            color: #b4b4bc;
-            margin-top: 4px;
-        }
-
-        .choice-badge {
-            padding: 6px 12px;
-            border-radius: 8px;
-            background: #ff2a2a;
-            color: #ffffff;
-            font-size: 12px;
-            font-weight: 700;
-            flex-shrink: 0;
-        }
-
-        .game-wrapper {
-            max-width: 440px;
-            margin: 0 auto;
-            padding: 18px;
-            border-radius: 16px;
-            background-color: rgba(20, 20, 24, 0.94);
-            border: 1px solid rgba(255, 42, 42, 0.35);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
-        }
-
-        .game-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            margin-bottom: 14px;
-            flex-wrap: wrap;
-        }
-
-        .game-title {
-            margin: 0;
-            font-size: 22px;
-            font-weight: 800;
-            letter-spacing: 1px;
-            color: #ff2a2a;
-        }
-
-        .controls {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        #turn-text {
-            padding: 6px 12px;
-            border-radius: 8px;
-            background-color: #1e1e24;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            font-size: 13px;
-            font-weight: 700;
-        }
-
-        .action-btn {
-            padding: 7px 14px;
-            border: none;
-            border-radius: 8px;
-            background-color: #ff2a2a;
-            color: #ffffff;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .action-btn:hover {
-            opacity: 0.9;
-        }
-
-        #board {
-            display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            grid-template-rows: repeat(8, 1fr);
-            aspect-ratio: 1 / 1;
-            width: 100%;
-            max-width: 380px;
-            margin: 0 auto;
-            overflow: hidden;
-            border: 2px solid #ff2a2a;
-            border-radius: 10px;
-        }
-
-        .square {
-            aspect-ratio: 1 / 1;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: clamp(22px, 6vw, 34px);
-            line-height: 1;
-            position: relative;
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .square.light {
-            background-color: #2c2c2c;
-        }
-
-        .square.dark {
-            background-color: #121212;
-        }
-
-        .square.selected {
-            background-color: rgba(255, 42, 42, 0.35) !important;
-        }
-
-        .square.valid-move::after {
-            content: "";
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background-color: #ff2a2a;
-            opacity: 0.85;
-            pointer-events: none;
-        }
-
-        .piece-white {
-            color: #ffffff;
-            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
-        }
-
-        .piece-black {
-            color: #ff3b3b;
-            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.85);
-        }
-
-        #game-msg {
-            margin-top: 12px;
-            font-size: 14px;
-            color: #d4d4d8;
-            min-height: 20px;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TAFKIR SPACE</title>
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;min-height:100vh;color:#fff;font-family:Arial,sans-serif;background:radial-gradient(ellipse at bottom,#191044 0%,#080817 55%,#02020b 100%);overflow-x:hidden}
+#stars{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.star{position:absolute;background:#fff;border-radius:50%;animation:twinkle 2s infinite alternate}
+@keyframes twinkle{from{opacity:.18;transform:scale(.6)}to{opacity:1;transform:scale(1.3)}}
+.planet{position:fixed;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#ffb36c,#a33b91 45%,#24104e 75%);box-shadow:0 0 65px #a33b9180;top:14%;left:-65px;animation:float 9s ease-in-out infinite;opacity:.55;z-index:0;pointer-events:none}
+@keyframes float{50%{transform:translate(35px,35px)}}
+header{position:relative;z-index:2;padding:20px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #ffffff20;background:#08081770;backdrop-filter:blur(8px)}
+.logo{font-size:25px;font-weight:900;letter-spacing:3px;color:#e8c46d}
+nav{display:flex;gap:22px}
+nav a,.side-menu a{color:#ddd;text-decoration:none}
+nav a:hover,.side-menu a:hover{color:#e8c46d}
+.menu-btn{display:none}
+.side-menu{position:fixed;z-index:30;top:0;right:-280px;width:260px;height:100vh;padding:70px 22px 25px;background:#100d27;border-left:1px solid #d8b45f;display:flex;flex-direction:column;gap:25px;transition:right .3s;box-shadow:-15px 0 40px #0008}
+.side-menu.open{right:0}
+#closeMenu{position:absolute;top:15px;left:15px;padding:8px 13px}
+main{position:relative;z-index:1;max-width:760px;margin:48px auto;padding:20px;text-align:center}
+.hero-icon{font-size:48px}
+.badge{color:#d8b45f;font-size:13px;letter-spacing:2px}
+h1{font-size:clamp(35px,8vw,65px);margin:10px 0;color:#f0d58a}
+.subtitle{color:#aaa;line-height:1.7}
+.card{margin-top:30px;padding:26px;border:1px solid #ffffff25;border-radius:25px;background:#ffffff0b;backdrop-filter:blur(14px);box-shadow:0 0 45px #8a48ff18;scroll-margin-top:20px}
+button{border:1px solid #ffffff30;border-radius:13px;background:#ffffff0c;color:white;padding:13px 16px;font-size:16px;cursor:pointer;transition:.2s}
+button:hover:not(:disabled){background:#7550b8;transform:translateY(-2px)}
+button:disabled{cursor:default;opacity:.8}
+.score{color:#e8c46d;font-weight:bold}
+#question{font-size:24px;margin:24px 0}
+.answers{display:grid;gap:12px}
+#next,#restart{display:none;background:linear-gradient(90deg,#7550c9,#b18a44);border:0;margin-top:20px;width:100%;font-weight:bold}
+#feedback{min-height:25px;margin-top:18px;line-height:1.6}
+.chess-board{width:min(100%,440px);aspect-ratio:1;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));grid-template-rows:repeat(8,minmax(0,1fr));margin:20px auto;border:3px solid #d8b45f;direction:ltr;overflow:hidden}
+.chess-cell{display:flex;align-items:center;justify-content:center;min-width:0;min-height:0;font-size:clamp(19px,6vw,42px);cursor:pointer;user-select:none}
+.light{background:#e6d5b5;color:#171323}.dark{background:#57416e;color:white}
+.selected{outline:3px solid #ffd45c;outline-offset:-3px}
+#chessStatus{color:#e8c46d;min-height:24px}
+footer{position:relative;z-index:1;text-align:center;color:#777;padding:25px}
+@media(max-width:600px){header{padding:16px 18px}nav{display:none}.menu-btn{display:block;position:fixed;top:12px;right:12px;z-index:20;background:#251747;font-size:24px;padding:7px 13px}.logo{margin-right:55px}main{margin:28px auto;padding:14px}.card{padding:19px}.chess-cell{font-size:clamp(18px,8vw,36px)}}
+</style>
 </head>
 <body>
-    <canvas id="bg-dots"></canvas>
-
-    <nav class="tafkir-nav" aria-label="قائمة TAFKIR">
-        <span class="tafkir-brand" onclick="openMenu()">TAFKIR</span>
-        <div class="tafkir-menu">
-            <button type="button" id="tab-menu" class="nav-btn active" onclick="openMenu()">القائمة</button>
-            <button type="button" id="tab-chess" class="nav-btn" onclick="openChess()">الشطرنج</button>
-        </div>
-    </nav>
-
-    <section id="menu-view" class="hub-wrapper">
-        <h1 class="hub-title">TAFKIR</h1>
-        <p class="hub-sub">اختر القسم اللي بغيتي تدخل ليه</p>
-
-        <div class="menu-grid">
-            <button type="button" class="choice-card" onclick="openChess()">
-                <div>
-                    <div class="choice-name">CHEESS — الشطرنج</div>
-                    <div class="choice-desc">لعب الشطرنج (الأبيض ضد الأحمر) مع حركة انزلاق وصوت</div>
-                </div>
-                <span class="choice-badge">دخول</span>
-            </button>
-
-            <button type="button" class="choice-card" onclick="openChess(true)">
-                <div>
-                    <div class="choice-name">مباراة جديدة مباشرة</div>
-                    <div class="choice-desc">تصفير الرقعة والبدء من جديد</div>
-                </div>
-                <span class="choice-badge">ابدأ</span>
-            </button>
-        </div>
-    </section>
-
-    <main id="chess-view" class="game-wrapper hidden">
-        <div class="game-header">
-            <h2 class="game-title">CHEESS</h2>
-            <div class="controls">
-                <span id="turn-text">الدور: الأبيض ♔</span>
-                <button type="button" class="action-btn" onclick="resetGame()">إعادة اللعبة</button>
-                <button type="button" class="nav-btn" onclick="openMenu()">القائمة</button>
-            </div>
-        </div>
-
-        <div id="board"></div>
-        <p id="game-msg">اضغط على قطعة لتحريكها (الأبيض ضد الأحمر).</p>
-    </main>
-
-    <script>
-        /* خلفية النقاط المتحركة بسرعة 1.5 */
-        const BG_SPEED = 1.5;
-
-        (function initAnimatedBackground() {
-            const canvas = document.getElementById('bg-dots');
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            if (!ctx) return;
-
-            let dots = [];
-
-            function createDots() {
-                const count = Math.min(70, Math.max(30, Math.floor((window.innerWidth * window.innerHeight) / 14000)));
-                dots = Array.from({ length: count }, (_, idx) => {
-                    const angle = (idx * 2.39996) % (Math.PI * 2);
-                    return {
-                        x: Math.random() * canvas.width,
-                        y: Math.random() * canvas.height,
-                        r: idx % 4 === 0 ? 2 : 1.35,
-                        vx: Math.cos(angle) * BG_SPEED,
-                        vy: Math.sin(angle) * BG_SPEED,
-                        isRed: idx % 3 === 0
-                    };
-                });
-            }
-
-            function resize() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-                createDots();
-            }
-
-            function step() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                for (const d of dots) {
-                    d.x += d.vx;
-                    d.y += d.vy;
-
-                    if (d.x < -10) d.x = canvas.width + 10;
-                    if (d.x > canvas.width + 10) d.x = -10;
-                    if (d.y < -10) d.y = canvas.height + 10;
-                    if (d.y > canvas.height + 10) d.y = -10;
-
-                    ctx.beginPath();
-                    ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
-                    ctx.fillStyle = d.isRed ? 'rgba(255, 42, 42, 0.45)' : 'rgba(255, 255, 255, 0.25)';
-                    ctx.fill();
-                }
-
-                requestAnimationFrame(step);
-            }
-
-            window.addEventListener('resize', resize);
-            resize();
-            requestAnimationFrame(step);
-        })();
-
-        function openMenu() {
-            document.getElementById('menu-view').classList.remove('hidden');
-            document.getElementById('chess-view').classList.add('hidden');
-            document.getElementById('tab-menu').classList.add('active');
-            document.getElementById('tab-chess').classList.remove('active');
-        }
-
-        function openChess(shouldReset = false) {
-            document.getElementById('menu-view').classList.add('hidden');
-            document.getElementById('chess-view').classList.remove('hidden');
-            document.getElementById('tab-menu').classList.remove('active');
-            document.getElementById('tab-chess').classList.add('active');
-            if (shouldReset) {
-                resetGame();
-            } else {
-                fixBoardLayout();
-            }
-        }
-
-        const initialSetup = [
-            ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'],
-            ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', ''],
-            ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
-            ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R']
-        ];
-
-        const pieceSymbols = {
-            K: '♔', Q: '♕', R: '♖', B: '♗', N: '♘', P: '♙',
-            k: '♚', q: '♛', r: '♜', b: '♝', n: '♞', p: '♟'
-        };
-
-        let board = [];
-        let turn = 'white';
-        let selected = null;
-        let validMoves = [];
-        let gameOver = false;
-        let audioCtx = null;
-
-        function isWhite(piece) {
-            return piece && piece === piece.toUpperCase();
-        }
-
-        function isBlack(piece) {
-            return piece && piece === piece.toLowerCase();
-        }
-
-        function inBounds(r, c) {
-            return r >= 0 && r < 8 && c >= 0 && c < 8;
-        }
-
-        ص                const fromSq = squares[fromRow * 8 + fromCol];
-                const toSq = squares[toRow * 8 + toCol];
-
-                if (!fromSq || !toSq) {
-                    playPieceSound(isCapture);
-                    return;
-                }
-
-                const fromRect = fromSq.getBoundingClientRect();
-                const toRect = toSq.getBoundingClientRect();
-
-                const ghost = document.createElement('div');
-                ghost.textContent = pieceSymbols[pieceKey] || pieceKey || '';
-                ghost.className = isWhite(pieceKey) ? 'piece-white' : 'piece-black';
-                ghost.style.position = 'fixed';
-                ghost.style.left = fromRect.left + 'px';
-                ghost.style.top = fromRect.top + 'px';
-                ghost.style.width = fromRect.width + 'px';
-                ghost.style.height = fromRect.height + 'px';
-                ghost.style.display = 'flex';
-                ghost.style.alignItems = 'center';
-                ghost.style.justifyContent = 'center';
-                ghost.style.fontSize = getComputedStyle(toSq).fontSize || '28px';
-                ghost.style.lineHeight = '1';
-                ghost.style.pointerEvents = 'none';
-                ghost.style.zIndex = '9999';
-                ghost.style.transition = 'transform 140ms cubic-bezier(0.22, 1, 0.36, 1)';
-
-                document.body.appendChild(ghost);
-
-                requestAnimationFrame(() => {
-                    ghost.style.transform = `translate3d(${toRect.left - fromRect.left}px, ${toRect.top - fromRect.top}px, 0) scale(1.06)`;
-                });
-
-                setTimeout(() => {
-                    playPieceSound(isCapture);
-                    ghost.remove();
-                }, 145);
-            } catch (e) {
-                playPieceSound(isCapture);
-            }
-        }
-
-        function fixBoardLayout() {
-            const boardEl = document.getElementById('board');
-            if (!boardEl) return;
-
-            boardEl.style.display = 'grid';
-            boardEl.style.gridTemplateColumns = 'repeat(8, 1fr)';
-            boardEl.style.gridTemplateRows = 'repeat(8, 1fr)';
-            boardEl.style.aspectRatio = '1 / 1';
-            boardEl.style.width = '100%';
-            boardEl.style.maxWidth = '380px';
-                        boardEl.style.margin = '0 auto';
-            boardEl.style.overflow = 'hidden';
-
-            const squares = boardEl.querySelectorAll('.square');
-            squares.forEach(sq => {
-                sq.style.aspectRatio = '1 / 1';
-                sq.style.width = '100%';
-                sq.style.height = '100%';
-                sq.style.display = 'flex';
-                sq.style.alignItems = 'center';
-                sq.style.justifyContent = 'center';
-                sq.style.fontSize = 'clamp(22px, 6vw, 34px)';
-                sq.style.lineHeight = '1';
-                sq.style.position = 'relative';
-                sq.style.backgroundColor = sq.classList.contains('light') ? '#2c2c2c' : '#121212';
-                if (sq.classList.contains('selected')) {
-                    sq.style.backgroundColor = 'rgba(255, 42, 42, 0.35)';
-                }
-            });
-        }
-
-        function renderBoard() {
-            const boardEl = document.getElementById('board');
-            boardEl.innerHTML = '';
-
-            for (let r = 0; r < 8; r++) {
-                for (let c = 0; c < 8; c++) {
-                    const sq = document.createElement('div');
-                    sq.className = 'square ' + ((r + c) % 2 === 0 ? 'light' : 'dark');
-
-                    if (selected && selected[0] === r && selected[1] === c) {
-                        sq.classList.add('selected');
-                    }
-
-                    if (validMoves.some(m => m[0] === r && m[1] === c)) {
-                        sq.classList.add('valid-move');
-                    }
-
-                    const piece = board[r][c];
-                    if (piece) {
-                        const span = document.createElement('span');
-                        span.textContent = pieceSymbols[piece] || piece;
-                        span.className = isWhite(piece) ? 'piece-white' : 'piece-black';
-                        sq.appendChild(span);
-                    }
-
-                    sq.onclick = () => handleSquareClick(r, c);
-                    boardEl.appendChild(sq);
-                }
-            }
-
-            fixBoardLayout();
-        }
-        function findKing(color, stateBoard = board) {
-            const targetKing = color === 'white' ? 'K' : 'k';
-            for (let r = 0; r < 8; r++) {
-                for (let c = 0; c < 8; c++) {
-                    if (stateBoard[r][c] === targetKing) {
-                        return [r, c];
-                    }
-                }
-            }
-            return null;
-        }
-
-        function isSquareAttacked(r, c, byColor, stateBoard = board) {
-            const pawnDir = byColor === 'white' ? -1 : 1;
-            for (const dc of [-1, 1]) {
-                const pr = r - pawnDir;
-                const pc = c + dc;
-                if (inBounds(pr, pc)) {
-                    const p = stateBoard[pr][pc];
-                    if (p && (byColor === 'white' ? p === 'P' : p === 'p')) {
-                        return true;
-                    }
-                }
-            }
-
-            const knightJumps = [
-                [-2, -1], [-2, 1], [-1, -2], [-1, 2],
-                [1, -2], [1, 2], [2, -1], [2, 1]
-            ];
-            const targetKnight = byColor === 'white' ? 'N' : 'n';
-            for (const [dr, dc] of knightJumps) {
-                const nr = r + dr;
-                const nc = c + dc;
-                if (inBounds(nr, nc) && stateBoard[nr][nc] === targetKnight) {
-                    return true;
-                }
-            }
-
-            const orthoDirs = [[-1, 0], [1, 0], [0, -1], [0, 1]];
-            const rookLike = byColor === 'white' ? ['R', 'Q'] : ['r', 'q'];
-            for (const [dr, dc] of orthoDirs) {
-                let nr = r + dr;
-                let nc = c + dc;
-                while (inBounds(nr, nc)) {
-                    const piece = stateBoard[nr][nc];
-                    if (piece) {
-                        if (rookLike.includes(piece)) return true;
-                        break;
-                    }
-                    nr += dr;
-                    nc += dc;
-                }
-            }
-
-            const diagDirs = [[-1, -1], [-1, 1], [1, -1], [1, 1]];
-            const bishopLike = byColor === 'white' ? ['B', 'Q'] : ['b', 'q'];
-            for (const [dr, dc] of diagDirs) {
-                let nr = r + dr;
-                let nc = c + dc;
-                while (inBounds(nr, nc)) {
-                    const piece = stateBoard[nr][nc];
-                    if (piece) {
-                        if (bishopLike.includes(piece)) return true;
-                        break;
-                    }
-                    nr += dr;
-                    nc += dc;
-                }
-            }
-
-            const targetKing = byColor === 'white' ? 'K' : 'k';
-            for (let dr = -1; dr <= 1; dr++) {
-                for (let dc = -1; dc <= 1; dc++) {
-                    if (dr !== 0 || dc !== 0) {
-                        const nr = r + dr;
-                        const nc = c + dc;
-                        if (inBounds(nr, nc) && stateBoard[nr][nc] === targetKing) {
-                            return true;
-                        }
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        function isInCheck(color, stateBoard = board) {
-            const kingPos = findKing(color, stateBoard);
-            if (!kingPos) return false;
-            const enemyColor = color === 'white' ? 'black' : 'white';
-            return isSquareAttacked(kingPos[0], kingPos[1], enemyColor, stateBoard);
-        }
-
-        function getPseudoLegalMoves(r, c, stateBoard = board) {
-            const piece = stateBoard[r][c];
-            if (!piece) return [];
-
-            const whitePiece = isWhite(piece);
-            const type = piece.toLowerCase();
-            const moves = [];
-
-            const canLand = (nr, nc) => {
-                if (!inBounds(nr, nc)) return false;
-                const target = stateBoard[nr][nc];
-                if (!target) return true;
-                return whitePiece ? isBlack(target) : isWhite(target);
-            };
-
-            const addSliding = (dirs) => {
-                for (const [dr, dc] of dirs) {
-                    let nr = r + dr;
-                    let nc = c + dc;
-                    while (inBounds(nr, nc)) {
-                        const target = stateBoard[nr][nc];
-                        if (!target) {
-                            moves.push([nr, nc]);
-                        } else {
-                            if (whitePiece ? isBlack(target) : isWhite(target)) {
-                                moves.push([nr, nc]);
-                            }
-                            break;
-                        }
-                        nr += dr;
-                        nc += dc;
-                    }
-                }
-            };
-
-            if (type === 'p') {
-                const dir = whitePiece ? -1 : 1;
-                const startRow = whitePiece ? 6 : 1;
-
-                if (inBounds(r + dir, c) && !stateBoard[r + dir][c]) {
-                    moves.push([r + dir, c]);
-                    if (r === startRow && inBounds(r + dir * 2, c) && !stateBoard[r + dir * 2][c]) {
-                        moves.push([r + dir * 2, c]);
-                    }
-                }
-
-                for (const dc of [-1, 1]) {
-                    const nr = r + dir;
-                    const nc = c + dc;
-                    if (inBounds(nr, nc) && stateBoard[nr][nc]) {
-                        if (whitePiece ? isBlack(stateBoard[nr][nc]) : isWhite(stateBoard[nr][nc])) {
-                            moves.push([nr, nc]);
-                        }
-                    }
-                }
-            } else if (type === 'n') {
-                const jumps = [
-                    [-2, -1], [-2, 1], [-1, -2], [-1, 2],
-                    [1, -2], [1, 2], [2, -1], [2, 1]
-                ];
-                for (const [dr, dc] of jumps) {
-                    const nr = r + dr;
-                    const nc = c + dc;
-                    if (canLand(nr, nc)) moves.push([nr, nc]);
-                }
-            } else if (type === 'r') {
-                addSliding([[-1, 0], [1, 0], [0, -1], [0, 1]]);
-            } else if (type === 'b') {
-                addSliding([[-1, -1], [-1, 1], [1, -1], [1, 1]]);
-            } else if (type === 'q') {
-                addSliding([
-                    [-1, 0], [1, 0], [0, -1], [0, 1],
-                    [-1, -1], [-1, 1], [1, -1], [1, 1]
-                ]);
-            } else if (type === 'k') {
-                for (let dr = -1; dr <= 1; dr++) {
-                    for (let dc = -1; dc <= 1; dc++) {
-                        if (dr !== 0 || dc !== 0) {
-                            const nr = r + dr;
-                            const nc = c + dc;
-                            if (canLand(nr, nc)) moves.push([nr, nc]);
-                        }
-                    }
-                }
-            }
-
-            return moves;
-        }
-
-        function getValidMoves(r, c) {
-            const piece = board[r][c];
-            if (!piece) return [];
-
-            const color = isWhite(piece) ? 'white' : 'black';
-            const pseudo = getPseudoLegalMoves(r, c, board);
-
-            return pseudo.filter(([nr, nc]) => {
-                const copy = board.map(row => [...row]);
-                let moved = copy[r][c];
-                if (moved === 'P' && nr === 0) moved = 'Q';
-                if (moved === 'p' && nr === 7) moved = 'q';
-                copy[nr][nc] = moved;
-                copy[r][c] = '';
-                return !isInCheck(color, copy);
-            });
-        }
-
-        function hasAnyLegalMove(color) {
-            for (let r = 0; r < 8; r++) {
-                for (let c = 0; c < 8; c++) {
-                    const piece = board[r][c];
-                    if (!piece) continue;
-                    if ((color === 'white' && isWhite(piece)) || (color === 'black' && isBlack(piece))) {
-                        if (getValidMoves(r, c).length > 0) {
-                            return true;
-                        }
-                    }
-                }
-            }
-            return false;
-        }
-
-        function handleSquareClick(r, c) {
-            if (gameOver) return;
-            const clickedPiece = board[r][c];
-
-            if (selected) {
-                const isMove = validMoves.some(m => m[0] === r && m[1] === c);
-                if (isMove) {
-                    const [sr, sc] = selected;
-                    let movingPiece = board[sr][sc];
-                    const captured = board[r][c];
-
-                    moveHistory.push({
-                        board: board.map(row => [...row]),
-                        turn,
-                        lastMove
-                    });
-
-                    if (movingPiece === 'P' && r === 0) movingPiece = 'Q';
-                    if (movingPiece === 'p' && r === 7) movingPiece = 'q';
-
-                    board[r][c] = movingPiece;
-                    board[sr][sc] = '';
-                    lastMove = { from: [sr, sc], to: [r, c] };
-
-                    animatePieceSlide(sr, sc, r, c, movingPiece, Boolean(captured));
-
-                    selected = null;
-                    validMoves = [];
-
-                    const nextTurn = turn === 'white' ? 'black' : 'white';
-                    const nextInCheck = isInCheck(nextTurn);
-                    const nextHasMoves = hasAnyLegalMove(nextTurn);
-
-                    if (!nextHasMoves && nextInCheck) {
-                        gameOver = true;
-                        document.getElementById('turn-text').textContent = 'كش مات!';
-                        document.getElementById('game-msg').textContent =
-                            turn === 'white' ? 'فاز الأبيض ♔ بكش مات!' : 'فاز الأحمر ♚ بكش مات!';
-                        if (typeof renderBoard === 'function') renderBoard();
-                        return;
-                    }
-
-                    if (!nextHasMoves && !nextInCheck) {
-                        gameOver = true;
-                        document.getElementById('turn-text').textContent = 'تعادل (Stalemate)';
-                        document.getElementById('game-msg').textContent = 'تعادل — لا توجد حركات متاحة.';
-                        if (typeof renderBoard === 'function') renderBoard();
-                        return;
-                    }
-
-                    turn = nextTurn;
-                    document.getElementById('turn-text').textContent =
-                        turn === 'white' ? 'الدور: الأبيض ♔' : 'الدور: الأحمر ♚';
-                    document.getElementById('game-msg').textContent = nextInCheck
-                        ? (turn === 'white' ? 'كش على الأبيض! خاصو يحرك الملك ولا يحميه.' : 'كش على الأحمر! خاصو يحرك الملك ولا يحميه.')
-                        : 'اضغط على قطعة لتحريكها (الأبيض ضد الأحمر).';
-                    if (typeof renderBoard === 'function') renderBoard();
-                    return;
-                }
-            }
-
-            if (clickedPiece && ((turn === 'white' && isWhite(clickedPiece)) || (turn === 'black' && isBlack(clickedPiece)))) {
-                selected = [r, c];
-                validMoves = getValidMoves(r, c);
-            } else {
-                selected = null;
-                validMoves = [];
-            }
-
-            if (typeof renderBoard === 'function') renderBoard();
-        }
-
-        function resetGame() {
-            board = initialSetup.map(row => [...row]);
-            turn = 'white';
-            selected = null;
-            validMoves = [];
-            lastMove = null;
-            gameOver = false;
-            moveHistory = [];
-            elapsedSeconds = 0;
-            document.getElementById('clock-text').textContent = '00:00';
-            document.getElementById('turn-text').textContent = 'الدور: الأبيض ♔';
-            document.getElementById('game-msg').textContent = 'اضغط على قطعة لتحريكها (الأبيض ضد الأحمر).';
-            if (typeof renderBoard === 'function') renderBoard();
-        }
-
-        resetGame();
-        openMenu();
-    </script>
+<div id="stars"></div><div class="planet"></div>
+<header>
+ <div class="logo">✦ TAFKIR</div>
+ <nav><a href="#">الرئيسية</a><a href="#game">تحدي الأسئلة</a><a href="#chess">الشطرنج</a></nav>
+</header>
+<button id="menuBtn" class="menu-btn" aria-label="فتح القائمة">☰</button>
+<div id="sideMenu" class="side-menu">
+ <button id="closeMenu" aria-label="إغلاق القائمة">✕</button>
+ <a href="#">🏠 الرئيسية</a><a href="#game">🧠 تحدي الأسئلة</a><a href="#chess">♟️ الشطرنج</a>
+</div>
+
+<main>
+ <div class="hero-icon">🚀</div>
+ <div class="badge">WELCOME TO THE GALAXY</div>
+ <h1>TAFKIR SPACE</h1>
+ <p class="subtitle">اختبر ذكاءك وانطلق نحو النجوم!</p>
+
+ <section class="card" id="game">
+  <div class="score">⭐ النقاط: <span id="score">0</span></div>
+  <p class="badge" id="progress">السؤال 1 من 5</p>
+  <h2 id="question">شنو هي عاصمة المغرب؟</h2>
+  <div class="answers" id="answers"></div>
+  <p id="feedback"></p>
+  <button id="next">السؤال التالي ←</button>
+  <div id="result" style="display:none">
+   <h2>🏆 انتهى التحدي!</h2><h1 id="finalScore"></h1><p id="message"></p>
+   <button id="restart">🔄 العب من جديد</button>
+  </div>
+ </section>
+
+ <section class="card" id="chess">
+  <h2>♟️ TAFKIR CHESS</h2>
+  <p class="subtitle">لعب الشطرنج ضد الكمبيوتر — اختار قطعة بيضاء ثم اختار المربع اللي بغيتها تمشي ليه.</p>
+  <div id="chessBoard" class="chess-board"></div>
+  <p id="chessStatus">دورك: الأبيض</p>
+  <button id="newChess">🔄 لعبة جديدة</button>
+ </section>
+</main>
+<footer>TAFKIR SPACE © 2026 — Explore the universe ✨</footer>
+
+<script>
+// نجوم متحركة
+const stars=document.getElementById("stars");
+for(let i=0;i<145;i++){
+ const s=document.createElement("div");s.className="star";
+ s.style.left=Math.random()*100+"%";s.style.top=Math.random()*100+"%";
+ const size=Math.random()*3+1;s.style.width=size+"px";s.style.height=size+"px";
+ s.style.animationDelay=Math.random()*3+"s";stars.appendChild(s);
+}
+
+// القائمة الجانبية
+const sideMenu=document.getElementById("sideMenu");
+document.getElementById("menuBtn").onclick=()=>sideMenu.classList.toggle("open");
+document.getElementById("closeMenu").onclick=()=>sideMenu.classList.remove("open");
+sideMenu.querySelectorAll("a").forEach(a=>a.onclick=()=>sideMenu.classList.remove("open"));
+
+// لعبة الأسئلة
+const questions=[
+ {q:"شنو هي عاصمة المغرب؟",a:["الرباط","طنجة","فاس"],c:0},
+ {q:"شحال من ضلع عند المثلث؟",a:["4","3","5"],c:1},
+ {q:"شنو هو الكوكب الأحمر؟",a:["الأرض","المشتري","المريخ"],c:2},
+ {q:"شحال حاصل 9 × 8؟",a:["72","81","64"],c:0},
+ {q:"شنو أكبر محيط فالعالم؟",a:["الأطلسي","الهندي","الهادئ"],c:2}
+];
+let qIndex=0,score=0,answered=false;
+const questionEl=document.getElementById("question"),answersEl=document.getElementById("answers");
+const feedback=document.getElementById("feedback"),next=document.getElementById("next");
+function showQuestion(){
+ answered=false;const q=questions[qIndex];
+ document.getElementById("progress").textContent=`السؤال ${qIndex+1} من ${questions.length}`;
+ questionEl.textContent=q.q;answersEl.innerHTML="";feedback.textContent="";next.style.display="none";
+ q.a.forEach((answer,i)=>{const btn=document.createElement("button");btn.textContent=answer;btn.onclick=()=>chooseAnswer(i);answersEl.appendChild(btn)});
+}
+function chooseAnswer(choice){
+ if(answered)return;answered=true;const correct=questions[qIndex].c;
+ [...answersEl.children].forEach((b,i)=>{b.disabled=true;if(i===correct)b.style.background="#176c4b";if(i===choice&&choice!==correct)b.style.background="#793b4a"});
+ if(choice===correct){score++;document.getElementById("score").textContent=score;feedback.textContent="🎉 جواب صحيح! ممتاز";}
+ else feedback.textContent="❌ الجواب الصحيح هو: "+questions[qIndex].a[correct];
+ next.textContent=qIndex===questions.length-1?"شوف النتيجة 🏆":"السؤال التالي ←";next.style.display="block";
+}
+next.onclick=()=>{
+ qIndex++;
+ if(qIndex<questions.length){showQuestion();return}
+ questionEl.style.display="none";answersEl.style.display="none";next.style.display="none";feedback.style.display="none";document.getElementById("progress").style.display="none";
+ document.getElementById("result").style.display="block";document.getElementById("finalScore").textContent=score+"/5";
+ document.getElementById("message").textContent=score===5?"أسطورة الفضاء! 🌟":score>=3?"ممتاز! عندك معلومات زوينة 🚀":"حاول مرة أخرى، البطل ما كيستسلمش!";
+ document.getElementById("restart").style.display="block";
+};
+document.getElementById("restart").onclick=()=>{
+ qIndex=0;score=0;document.getElementById("score").textContent="0";
+ questionEl.style.display="block";answersEl.style.display="grid";feedback.style.display="block";document.getElementById("progress").style.display="block";
+ document.getElementById("result").style.display="none";document.getElementById("restart").style.display="none";showQuestion();
+};
+showQuestion();
+
+// شطرنج تجريبي: حركات القطع الأساسية، بدون التبييت والترقية والتحقق من كش مات.
+const initial=[
+"♜","♞","♝","♛","♚","♝","♞","♜",
+"♟","♟","♟","♟","♟","♟","♟","♟",
+"","","","","","","","",
+"","","","","","","","",
+"","","","","","","","",
+"","","","","","","","",
+"♙","♙","♙","♙","♙","♙","♙","♙",
+"♖","♘","♗","♕","♔","♗","♘","♖"
+];
+let board=[...initial],selected=-1,whiteTurn=true,gameOver=false;
+const chessBoard=document.getElementById("chessBoard"),chessStatus=document.getElementById("chessStatus");
+function isWhite(p){return "♙♖♘♗♕♔".includes(p)}
+function isBlack(p){return "♟♜♝♛♚".includes(p)}
+function sameSide(a,b){return !!a&&!!b&&isWhite(a)===isWhite(b)}
+function drawChess(){
+ chessBoard.innerHTML="";
+ board.forEach((piece,i)=>{
+  const cell=document.createElement("div");
+  cell.className="chess-cell "+((Math.floor(i/8)+i%8)%2?"dark":"light");
+  if(i===selected)cell.classList.add("selected");
+  cell.textContent=piece;cell.onclick=()=>clickChess(i);chessBoard.appendChild(cell);
+ });
+}
+function legalMoves(from){
+ const p=board[from],r=Math.floor(from/8),c=from%8;if(!p)return [];
+ const white=isWhite(p),moves=[];
+ const add=(rr,cc)=>{
+  if(rr<0||rr>7||cc<0||cc>7)return false;
+  const to=rr*8+cc;if(sameSide(p,board[to]))return false;
+  moves.push(to);return !board[to];
+ };
+ if(p==="♙"||p==="♟"){
+  const d=white?-1:1,rr=r+d;
+  if(rr>=0&&rr<8&&!board[rr*8+c]){
+   moves.push(rr*8+c);
+   const start=white?6:1;
+   if(r===start&&!board[(r+2*d)*8+c])moves.push((r+2*d)*8+c);
+  }
+  for(const dc of [-1,1]){const nr=r+d,nc=c+dc;if(nr>=0&&nr<8&&nc>=0&&nc<8&&board[nr*8+nc]&&!sameSide(p,board[nr*8+nc]))moves.push(nr*8+nc)}
+ }else{
+  let dirs=[];
+  if(p==="♘"||p==="♞")dirs=[[-2,-1],[-2,1],[-1,-2],[-1,2],[1,-2],[1,2],[2,-1],[2,1]];
+  if(p==="♔"||p==="♚")dirs=[[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];
+  if("♖♜".includes(p))dirs=[[-1,0],[1,0],[0,-1],[0,1]];
+  if("♗♝".includes(p))dirs=[[-1,-1],[-1,1],[1,-1],[1,1]];
+  if("♕♛".includes(p))dirs=[[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];
+  const sliding="♖♜♗♝♕♛".includes(p);
+  for(const [dr,dc] of dirs){let rr=r+dr,cc=c+dc;while(add(rr,cc)){if(!sliding)break;rr+=dr;cc+=dc}}
+ }
+ return moves;
+}
+function clickChess(i){
+ if(!whiteTurn||gameOver)return;
+ if(selected<0){if(board[i]&&isWhite(board[i]))selected=i}
+ else if(i===selected)selected=-1;
+ else if(legalMoves(selected).includes(i)){
+  if("♚♛♜♝♞♟".includes(board[i])){gameOver=true;board[i]=board[selected];board[selected]="";drawChess();chessStatus.textContent="🏆 فزتي! الكمبيوتر خسر.";return}
+  board[i]=board[selected];board[selected]="";selected=-1;whiteTurn=false;drawChess();chessStatus.textContent="دور الكمبيوتر...";setTimeout(computerMove,450);return;
+ }else if(board[i]&&isWhite(board[i]))selected=i;
+ drawChess();
+}
+function computerMove(){
+ if(gameOver)return;
+ const moves=[];
+ board.forEach((p,i)=>{if(p&&isBlack(p))legalMoves(i).forEach(to=>moves.push([i,to]))});
+ if(!moves.length){chessStatus.textContent="ما بقاتش حركات للكمبيوتر.";gameOver=true;return}
+ const [from,to]=moves[Math.floor(Math.random()*moves.length)];
+ if("♔♕♖♗♘♙".includes(board[to])){board[to]=board[from];board[from]="";drawChess();chessStatus.textContent="الكمبيوتر ربح هاد الجولة.";gameOver=true;return}
+ board[to]=board[from];board[from]="";
+ // ترقية البيدق تلقائياً إلى وزير
+ if(board[to]==="♟"&&Math.floor(to/8)===7)board[to]="♛";
+ whiteTurn=true;chessStatus.textContent="دورك: الأبيض";drawChess();
+}
+function resetChess(){board=[...initial];selected=-1;whiteTurn=true;gameOver=false;chessStatus.textContent="دورك: الأبيض";drawChess()}
+document.getElementById("newChess").onclick=resetChess;
+drawChess();
+</script>
 </body>
 </html>
