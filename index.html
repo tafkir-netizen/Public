@@ -631,4 +631,14 @@
             selected = null;
             validMoves = [];
             gameOver = false;
-            document.getElementById('turn
+            document.getElementById('turn-text').textContent = 'الدور: الأبيض ♔';
+            document.getElementById('game-msg').textContent = 'اضغط على قطعة لتحريكها (الأبيض ضد الأحمر).';
+            renderBoard();
+        }
+
+        resetGame();
+    </script>
+
+</body>
+</html>
+
